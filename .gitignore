@@ -86,3 +86,4 @@ nb-configuration.xml
 # Bat and Config files
 *.bat
 *.yml
+*.txt
