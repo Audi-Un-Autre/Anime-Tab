@@ -59,12 +59,10 @@ public class DataEntry {
         switch(command){
             case ADD:
                 Add();
-                //System.out.println("Adding to database. Write operations available.");
                 break;
 
             case VIEW:
                 View();
-                //System.out.println("Viewing database. Read only operations.");
                 break;
 
             case QUIT:
