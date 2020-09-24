@@ -88,7 +88,7 @@ public class DataEntry {
     private static void Add(NewEntry entry){
         Connection connection;
         ResultSet rs;
-        int id, rows = 0;
+        int id;
 
         try{
             connection = getConnection();
@@ -97,10 +97,8 @@ public class DataEntry {
 
             // Get all existing primary key values
             ArrayList<Integer> existingIDs = new ArrayList<Integer>();
-            while(rs.next()){
-                rows++;
-                existingIDs.add(rs.getInt(rows));
-            }
+            while(rs.next())
+                existingIDs.add(rs.getInt("work_id"));
 
             // Create random PK for new entry, checking against current PKs
             do{

@@ -54,7 +54,7 @@ public class TabGUI extends Application{
         choices.setPadding(new Insets(0, 0, 0, 50));
         choices.getChildren().addAll(add, edit, search);
 
-        // Center pane - Input
+    // Center pane - Input
         GridPane inputFields = new GridPane();
         inputFields.setPadding(new Insets(0, 0, 0, 150));
         inputFields.setAlignment(Pos.CENTER);
@@ -120,7 +120,7 @@ public class TabGUI extends Application{
                 img.setImage(imageTemp);
                 img.setFitWidth(300);
                 img.setPreserveRatio(true);
-                imageURL.appendText(file.toURI().toString());
+                imageURL.setText(file.toURI().toString());
             }
         });
 
