@@ -1,29 +1,39 @@
 package ui;
 
+import database.*;
+
 import java.util.Vector;
 import java.util.Calendar;
 import java.io.*;
 
 import javafx.application.Application;
+
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.StackPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+
 import javafx.stage.Stage;
 import javafx.stage.FileChooser;
+
 import javafx.scene.layout.*;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.geometry.HPos;
-import javafx.geometry.VPos;
+import javafx.geometry.*;
 import javafx.collections.*;
 
 public class TabGUI extends Application{
-    Stage window;
-    TextArea previewArea;
-    VBox preview;
+    Stage               window;
+    TextArea            previewArea;
+    VBox                preview;
 
+    TextField           titleInput;
+    TextField           workTitleAliasInput;
+    TextField           authorInput;
+    TextField           authorAliasInput;
+    ComboBox<Integer>   yearInput;
+    ComboBox<String>    workTypeInput;
+    ComboBox<String>    languageInput;
+
+    ImageView           img;    
     
     public static void main(String[] args) throws Exception{
         launch();
@@ -53,22 +63,22 @@ public class TabGUI extends Application{
 
         Label workTitle = new Label("Title");
         GridPane.setConstraints(workTitle, 0, 0);
-        TextField titleInput = new TextField();
+        titleInput = new TextField();
         GridPane.setConstraints(titleInput, 1, 0);
 
         Label workTitleAlias = new Label("Title alias");
         GridPane.setConstraints(workTitleAlias, 0, 1);
-        TextField workTitleAliasInput = new TextField();
+        workTitleAliasInput = new TextField();
         GridPane.setConstraints(workTitleAliasInput, 1, 1);
 
         Label author = new Label("Author");
         GridPane.setConstraints(author, 0, 4);
-        TextField authorInput = new TextField();
+        authorInput = new TextField();
         GridPane.setConstraints(authorInput, 1, 4);
 
         Label authorAlias = new Label("Author alias");
         GridPane.setConstraints(authorAlias, 0, 5);
-        TextField authorAliasInput = new TextField();
+        authorAliasInput = new TextField();
         GridPane.setConstraints(authorAliasInput, 1, 5);
 
         Label year = new Label("Year");
@@ -78,19 +88,19 @@ public class TabGUI extends Application{
         for (int i = c.get(Calendar.YEAR); i >= 1900; i--){
             years.add(i);
         }
-        ComboBox<Integer> yearInput = new ComboBox<Integer>(FXCollections.observableArrayList(years));
+        yearInput = new ComboBox<Integer>(FXCollections.observableArrayList(years));
         GridPane.setConstraints(yearInput, 1, 8);
 
         Label workType = new Label("Work Type");
         GridPane.setConstraints(workType, 0, 9);
         String workTypes[] = {"Anime", "Manga", "Manhwa", "Comic", "Other"};
-        ComboBox<String> workTypeInput = new ComboBox<String>(FXCollections.observableArrayList(workTypes));
+        workTypeInput = new ComboBox<String>(FXCollections.observableArrayList(workTypes));
         GridPane.setConstraints(workTypeInput, 1, 9);
 
         Label language = new Label("Language");
         GridPane.setConstraints(language, 0, 10);
         String languages[] = {"Japanese", "English", "French", "Spanish", "German", "Other"};
-        ComboBox<String> languageInput = new ComboBox<String>(FXCollections.observableArrayList(languages));
+        languageInput = new ComboBox<String>(FXCollections.observableArrayList(languages));
         GridPane.setConstraints(languageInput, 1, 10);
 
         Label image = new Label("Image");
@@ -102,22 +112,26 @@ public class TabGUI extends Application{
         GridPane.setConstraints(imageBrowse, 2, 11);
 
         FileChooser f = new FileChooser();
-        ImageView imgview = new ImageView();
+        img = new ImageView();
         imageBrowse.setOnAction((event) -> {
             File file = f.showOpenDialog(window);
             if (file != null){
-                Image img = new Image(file.toURI().toString());
-                imgview.setImage(img);
-                imgview.setFitWidth(300);
-                imgview.setPreserveRatio(true);
+                Image imageTemp = new Image(file.toURI().toString());
+                img.setImage(imageTemp);
+                img.setFitWidth(300);
+                img.setPreserveRatio(true);
                 imageURL.appendText(file.toURI().toString());
             }
         });
 
+        // Preview data
         Button previewButton = new Button("Preview");
         GridPane.setRowIndex(previewButton, 25);
         previewButton.setOnAction((event) -> {
             previewArea.setText("");
+            if (preview.getChildren().contains(img)){
+                preview.getChildren().remove(img);
+            }
             previewArea.appendText("Title: " + titleInput.getText());
             previewArea.appendText("\nTitle alias: " + workTitleAliasInput.getText());
             previewArea.appendText("\nAuthor: " + authorInput.getText());
@@ -125,12 +139,20 @@ public class TabGUI extends Application{
             previewArea.appendText("\nYear: " + yearInput.getSelectionModel().getSelectedItem());
             previewArea.appendText("\nWork Type: " + workTypeInput.getSelectionModel().getSelectedItem());
             previewArea.appendText("\nLangauge: " + languageInput.getSelectionModel().getSelectedItem());
-            if (imgview != null){
-                preview.getChildren().add(imgview);
+            if (!imageURL.getText().isEmpty()){
+                preview.getChildren().add(img);
             }
         });
 
-        inputFields.getChildren().addAll(workTitle, titleInput, workTitleAlias, workTitleAliasInput, author, authorInput, authorAlias, authorAliasInput, year, yearInput, workType, workTypeInput, language, languageInput, image, imageURL, imageBrowse, previewButton);
+        // Submit to database
+        Button submit = new Button("Add Entry!");
+        GridPane.setRowIndex(submit, 27);
+        submit.setOnAction((event) -> {
+            NewEntry entry = new NewEntry(titleInput.getText(), workTitleAliasInput.getText(), authorInput.getText(), authorAliasInput.getText(), yearInput.getSelectionModel().getSelectedItem(), workTypeInput.getSelectionModel().getSelectedItem(), languageInput.getSelectionModel().getSelectedItem(), img);
+            DataEntry enterData = new DataEntry(entry, DataEntry.Commands.ADD);
+        });
+
+        inputFields.getChildren().addAll(workTitle, titleInput, workTitleAlias, workTitleAliasInput, author, authorInput, authorAlias, authorAliasInput, year, yearInput, workType, workTypeInput, language, languageInput, image, imageURL, imageBrowse, previewButton, submit);
 
         // Right pane - Preview output
         preview = new VBox();
