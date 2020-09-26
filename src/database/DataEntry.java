@@ -9,25 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import org.yaml.snakeyaml.*;
 
-public class DataEntry {
-
-    // DB operations allowed to user
-    public enum Commands{
-        ADD, VIEW;
-    }
-    
-    public DataEntry(NewEntry entry, Commands command){
-        switch(command){
-            case ADD:
-                Add(entry);
-                break;
-
-            case VIEW:
-                View();
-                break;
-        }
-    }
-
+public class DataEntry {    
     private static Auth GetAuth() throws Exception{
         try{
             // Get .yaml config file and parse it
@@ -69,23 +51,28 @@ public class DataEntry {
         return null;
     }
 
-    private static void View(){
+    public static ArrayList<EntryInfo> View(String query){
         Connection connection;
+        ArrayList<EntryInfo> entries = new ArrayList<EntryInfo>();
+
         try{
             connection = getConnection();
-            PreparedStatement statement = connection.prepareStatement("SELECT title FROM work");
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM work WHERE '"+query+"' IN (title, title_alias, author, author_alias, year, work_type, language)");
+            ResultSet rs = statement.executeQuery();
 
-            ResultSet results = statement.executeQuery();
-            while(results.next()){
-                System.out.println(results.getString("title"));
+            while(rs.next()){
+                EntryInfo newFind = new EntryInfo(rs.getString("title"), rs.getString("title_alias"), rs.getString("author"), rs.getString("author_alias"), rs.getInt("year"), rs.getString("work_type"), rs.getString("language"), rs.getBytes("cover"));
+                entries.add(newFind);
             }
             connection.close();
+            System.out.println("Connection closed.");
         } catch(Exception e) {
             System.out.println(e);
         }
+        return entries;
     }
 
-    private static void Add(NewEntry entry){
+    public static void Add(EntryInfo entry){
         Connection connection;
         ResultSet rs;
         int id;

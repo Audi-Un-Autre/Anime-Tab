@@ -4,6 +4,7 @@ import database.*;
 
 import java.util.Vector;
 import java.util.Calendar;
+import java.util.ArrayList;
 import java.io.*;
 
 import javafx.application.Application;
@@ -22,18 +23,8 @@ import javafx.collections.*;
 
 public class TabGUI extends Application{
     Stage               window;
-    TextArea            previewArea;
-    VBox                preview;
-
-    TextField           titleInput;
-    TextField           workTitleAliasInput;
-    TextField           authorInput;
-    TextField           authorAliasInput;
-    ComboBox<Integer>   yearInput;
-    ComboBox<String>    workTypeInput;
-    ComboBox<String>    languageInput;
-
-    ImageView           img;    
+    final int           stageH = 600,
+                        stageW = 1000;
     
     public static void main(String[] args) throws Exception{
         launch();
@@ -44,41 +35,82 @@ public class TabGUI extends Application{
         window = primaryStage;
         window.getIcons().add(new Image(TabGUI.class.getResourceAsStream("gon.png")));
         window.setTitle("Anime Tab!");
+        window.setResizable(false);
 
-        // Left pane - Actions
-        VBox choices = new VBox(20);
+        HomeScene();
+
+        window.show();
+    }
+
+    private VBox ReturnHome(){
+        VBox aboveChoices = new VBox();
+        aboveChoices.setStyle("-fx-background-color: yellow");
+
+        Button back = new Button("<- Back");
+        back.setOnAction(e -> window.setScene(HomeScene()));
+
+        aboveChoices.setAlignment(Pos.CENTER);
+        aboveChoices.prefWidthProperty().bind(window.widthProperty().multiply(.2));
+        aboveChoices.getChildren().add(back);
+
+        return aboveChoices;
+    }
+
+    private VBox MenuActions(){
+        VBox choices = new VBox(10);
+
         Button add = new Button("Add New Entry");
+        add.setOnAction(e -> window.setScene(AddEntry()));
+
         Button edit = new Button("Edit Entry");
+        //edit.setOnAction(e -> window.setScene(sceneEdit));
+
         Button search = new Button("Search");
-        choices.setAlignment(Pos.CENTER);
-        choices.setPadding(new Insets(0, 0, 0, 50));
+        search.setOnAction(e -> window.setScene(Search()));
+
+        choices.setAlignment(Pos.CENTER_LEFT);
+        choices.prefWidthProperty().bind(window.widthProperty().multiply(.2));
         choices.getChildren().addAll(add, edit, search);
 
-    // Center pane - Input
+        return choices;
+    }
+
+    private Scene HomeScene(){
+        BorderPane main = new BorderPane();
+        main.setLeft(MenuActions());
+        Scene home = new Scene(main, stageW, stageH);
+        home.getStylesheets().add(TabGUI.class.getResource("HomeStyle.css").toExternalForm());
+        window.setScene(home);
+
+        return home;
+    }
+
+    private Scene AddEntry(){
+        // Center pane - Input
         GridPane inputFields = new GridPane();
-        inputFields.setPadding(new Insets(0, 0, 0, 150));
-        inputFields.setAlignment(Pos.CENTER);
+        inputFields.prefWidthProperty().bind(window.widthProperty().multiply(.4));
+        inputFields.setAlignment(Pos.CENTER_RIGHT);
         inputFields.setVgap(3);
         inputFields.setHgap(10);
 
         Label workTitle = new Label("Title");
         GridPane.setConstraints(workTitle, 0, 0);
-        titleInput = new TextField();
+        TextField titleInput = new TextField();
         GridPane.setConstraints(titleInput, 1, 0);
 
         Label workTitleAlias = new Label("Title alias");
         GridPane.setConstraints(workTitleAlias, 0, 1);
-        workTitleAliasInput = new TextField();
+        TextField workTitleAliasInput = new TextField();
         GridPane.setConstraints(workTitleAliasInput, 1, 1);
 
         Label author = new Label("Author");
         GridPane.setConstraints(author, 0, 4);
-        authorInput = new TextField();
+        TextField authorInput = new TextField();
         GridPane.setConstraints(authorInput, 1, 4);
 
         Label authorAlias = new Label("Author alias");
         GridPane.setConstraints(authorAlias, 0, 5);
-        authorAliasInput = new TextField();
+        TextField authorAliasInput = new TextField();
         GridPane.setConstraints(authorAliasInput, 1, 5);
 
         Label year = new Label("Year");
@@ -88,31 +120,30 @@ public class TabGUI extends Application{
         for (int i = c.get(Calendar.YEAR); i >= 1900; i--){
             years.add(i);
         }
-        yearInput = new ComboBox<Integer>(FXCollections.observableArrayList(years));
+        ComboBox<Integer> yearInput = new ComboBox<Integer>(FXCollections.observableArrayList(years));
         GridPane.setConstraints(yearInput, 1, 8);
 
         Label workType = new Label("Work Type");
         GridPane.setConstraints(workType, 0, 9);
         String workTypes[] = {"Anime", "Manga", "Manhwa", "Comic", "Other"};
-        workTypeInput = new ComboBox<String>(FXCollections.observableArrayList(workTypes));
+        ComboBox<String> workTypeInput = new ComboBox<String>(FXCollections.observableArrayList(workTypes));
         GridPane.setConstraints(workTypeInput, 1, 9);
 
         Label language = new Label("Language");
         GridPane.setConstraints(language, 0, 10);
         String languages[] = {"Japanese", "English", "French", "Spanish", "German", "Other"};
-        languageInput = new ComboBox<String>(FXCollections.observableArrayList(languages));
+        ComboBox<String> languageInput = new ComboBox<String>(FXCollections.observableArrayList(languages));
         GridPane.setConstraints(languageInput, 1, 10);
 
         Label image = new Label("Image");
         GridPane.setConstraints(image, 0, 11);
         TextField imageURL = new TextField();
         GridPane.setConstraints(imageURL, 1, 11);
-        imageURL.setDisable(true);
         Button imageBrowse = new Button("Browse");
         GridPane.setConstraints(imageBrowse, 2, 11);
 
         FileChooser f = new FileChooser();
-        img = new ImageView();
+        ImageView img = new ImageView();
         imageBrowse.setOnAction((event) -> {
             File file = f.showOpenDialog(window);
             if (file != null){
@@ -124,9 +155,21 @@ public class TabGUI extends Application{
             }
         });
 
+        // Right pane - Preview output
+        VBox preview = new VBox();
+        TextArea previewArea = new TextArea();
+        Label previewTitle = new Label("Preview");
+        previewArea.setDisable(true);
+        previewArea.setMaxHeight(150);
+        previewArea.setMaxWidth(300);
+        preview.setAlignment(Pos.CENTER);
+        previewArea.setWrapText(true);
+        preview.getChildren().addAll(previewTitle, previewArea);
+        preview.prefWidthProperty().bind(window.widthProperty().multiply(.4));
+
         // Preview data
         Button previewButton = new Button("Preview");
-        GridPane.setRowIndex(previewButton, 25);
+        GridPane.setConstraints(previewButton, 1, 25);
         previewButton.setOnAction((event) -> {
             previewArea.setText("");
             if (preview.getChildren().contains(img)){
@@ -146,34 +189,101 @@ public class TabGUI extends Application{
 
         // Submit to database
         Button submit = new Button("Add Entry!");
-        GridPane.setRowIndex(submit, 27);
+        GridPane.setConstraints(submit, 1, 27);
         submit.setOnAction((event) -> {
-            NewEntry entry = new NewEntry(titleInput.getText(), workTitleAliasInput.getText(), authorInput.getText(), authorAliasInput.getText(), yearInput.getSelectionModel().getSelectedItem(), workTypeInput.getSelectionModel().getSelectedItem(), languageInput.getSelectionModel().getSelectedItem(), img);
-            DataEntry enterData = new DataEntry(entry, DataEntry.Commands.ADD);
+
+            if (titleInput.getText().isBlank() && workTitleAlias.getText().isBlank()){
+                return;
+            }
+
+            if (authorInput.getText().isBlank() && authorAliasInput.getText().isBlank()){
+                return;
+            }
+
+            EntryInfo entry = new EntryInfo(titleInput.getText(), workTitleAliasInput.getText(), authorInput.getText(), authorAliasInput.getText(), yearInput.getSelectionModel().getSelectedItem(), workTypeInput.getSelectionModel().getSelectedItem(), languageInput.getSelectionModel().getSelectedItem(), img);
+            DataEntry enterData = new DataEntry();
+            enterData.Add(entry);
         });
 
         inputFields.getChildren().addAll(workTitle, titleInput, workTitleAlias, workTitleAliasInput, author, authorInput, authorAlias, authorAliasInput, year, yearInput, workType, workTypeInput, language, languageInput, image, imageURL, imageBrowse, previewButton, submit);
 
-        // Right pane - Preview output
-        preview = new VBox();
-        previewArea = new TextArea();
-        Label previewTitle = new Label("Preview");
-        previewArea.setPrefHeight(200);
-        previewArea.setPrefWidth(300);
-        previewArea.setDisable(true);
-        preview.setPadding(new Insets(0, 50, 0, 0));
-        preview.setAlignment(Pos.CENTER);
-        previewArea.setWrapText(true);
-        preview.getChildren().addAll(previewTitle, previewArea);
-
         BorderPane borderPane = new BorderPane();
-        borderPane.setLeft(choices);
+        borderPane.setLeft(ReturnHome());
         borderPane.setCenter(inputFields);
         borderPane.setRight(preview);
 
-        Scene scene = new Scene(borderPane, 1000, 600);
-        //scene.getStylesheets().add(TabGUI.class.getResource("TabStyle.css").toExternalForm());
-        window.setScene(scene);
-        window.show();
+        Scene sceneAdd = new Scene(borderPane, stageW, stageH);
+        sceneAdd.getStylesheets().add(TabGUI.class.getResource("AddStyle.css").toExternalForm());
+
+        return sceneAdd;
+    }
+
+    private Scene Search(){
+        GridPane searchPane = new GridPane();
+        searchPane.setAlignment(Pos.CENTER);
+        searchPane.prefWidthProperty().bind(window.widthProperty().multiply(.4));
+    
+        Label result = new Label("Results:");
+        TextArea results = new TextArea();
+        results.setMaxHeight(150);
+        results.setMaxWidth(300);
+        results.setDisable(true);
+
+        Label searchLabel = new Label("Search:");
+        searchPane.setConstraints(searchLabel, 0, 0);
+
+        TextField searchBar = new TextField("Search by title, author, language, etc . . .");
+        searchPane.setConstraints(searchBar, 0, 1);
+
+        Button searchNow = new Button("Search!");
+        searchPane.setConstraints(searchNow, 0, 2);
+        searchPane.getChildren().addAll(searchLabel, searchBar, searchNow);
+
+        VBox resultPane = new VBox(5);
+        resultPane.setAlignment(Pos.CENTER);
+        resultPane.prefWidthProperty().bind(window.widthProperty().multiply(.4));
+
+        ToggleGroup parameters = new ToggleGroup();
+        RadioButton author = new RadioButton("Author");
+        RadioButton title = new RadioButton("Title");
+        RadioButton year = new RadioButton("Year Published");
+        RadioButton language = new RadioButton("Language");
+        RadioButton workType = new RadioButton("Format");
+        author.setToggleGroup(parameters);
+        title.setToggleGroup(parameters);
+        year.setToggleGroup(parameters);
+        language.setToggleGroup(parameters);
+        workType.setToggleGroup(parameters);
+
+        resultPane.getChildren().addAll(result, results);
+
+        // Query database for search parameters
+        searchNow.setOnAction(e -> {
+            results.clear();
+            String query = searchBar.getText();
+            if (query.isBlank())
+                return;
+            else{
+                ArrayList<EntryInfo> queryResults = DataEntry.View(query);
+                if (queryResults.isEmpty()){
+                    results.appendText("No results found.");
+                } else {
+                    for (EntryInfo ei : queryResults){
+                        results.appendText(ei.getTitle() + "\n");
+                    }
+                }
+            }
+        });
+        
+        BorderPane borderPane = new BorderPane();
+        borderPane.setLeft(ReturnHome());
+        borderPane.setCenter(searchPane);
+        borderPane.setRight(resultPane);
+
+        Scene sceneSearch = new Scene(borderPane, stageW, stageH);
+        window.setScene(sceneSearch);
+
+        sceneSearch.getStylesheets().add(TabGUI.class.getResource("AddStyle.css").toExternalForm());
+        return sceneSearch;
     }
 }
