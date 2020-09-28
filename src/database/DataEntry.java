@@ -16,7 +16,7 @@ public class DataEntry {
             String loc = System.getProperty("user.dir");
             InputStream file = new FileInputStream(new File(loc + "/config.yml"));
             Yaml yaml = new Yaml();
-            Map<String, String> config = (Map<String, String>) yaml.load(file);
+            Map<String, String> config = yaml.load(file);
             
             String username = System.getenv(config.get("DB ID"));
             String pw = System.getenv(config.get("DB LI"));
@@ -95,7 +95,7 @@ public class DataEntry {
             entry.setId(id);
 
             // Insert entry into database
-            PreparedStatement enterData = connection.prepareStatement("INSERT INTO work VALUES('"+entry.id+"', '"+entry.title+"', '"+entry.titleAlias+"', + '"+entry.author+"', '"+entry.authorAlias+"', '"+entry.year+"', '"+entry.workType+"', '"+entry.language+"', '"+entry.image+"')");
+            PreparedStatement enterData = connection.prepareStatement("INSERT INTO work VALUES('"+entry.getId()+"', '"+entry.getTitle()+"', '"+entry.getTitleAlias()+"', + '"+entry.getAuthor()+"', '"+entry.getAuthorAlias()+"', '"+entry.getYear()+"', '"+entry.getWorkType()+"', '"+entry.getLanguage()+"', '"+entry.getImage()+"')");
             enterData.executeUpdate();
             System.out.println("NEW ENTRY SUCCESSFUL!");
             connection.close();
@@ -109,7 +109,7 @@ public class DataEntry {
         Connection connection;
         try{
             connection = getConnection();
-            PreparedStatement statement = connection.prepareStatement("DELETE FROM work WHERE work_id = '"+entry.id+"'");
+            PreparedStatement statement = connection.prepareStatement("DELETE FROM work WHERE work_id = '"+entry.getId()+"'");
             statement.executeUpdate();
             System.out.println("Entry deleted.");
             connection.close();

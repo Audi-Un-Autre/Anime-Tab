@@ -207,8 +207,7 @@ public class TabGUI extends Application{
             }
 
             EntryInfo entry = new EntryInfo(titleInput.getText(), workTitleAliasInput.getText(), authorInput.getText(), authorAliasInput.getText(), yearInput.getSelectionModel().getSelectedItem(), workTypeInput.getSelectionModel().getSelectedItem(), languageInput.getSelectionModel().getSelectedItem(), img);
-            DataEntry enterData = new DataEntry();
-            enterData.Add(entry);
+            DataEntry.Add(entry);
         });
 
         inputFields.getChildren().addAll(workTitle, titleInput, workTitleAlias, workTitleAliasInput, author, authorInput, authorAlias, authorAliasInput, year, yearInput, workType, workTypeInput, language, languageInput, image, imageURL, imageBrowse, previewButton, submit);
@@ -232,18 +231,17 @@ public class TabGUI extends Application{
         Label result = new Label();
 
         Label searchLabel = new Label("Search:");
-        searchPane.setConstraints(searchLabel, 0, 0);
+        GridPane.setConstraints(searchLabel, 0, 0);
 
         TextField searchBar = new TextField();
-        searchPane.setConstraints(searchBar, 0, 1);
+        GridPane.setConstraints(searchBar, 0, 1);
 
         Button searchNow = new Button("Search!");
-        searchPane.setConstraints(searchNow, 0, 2);
+        GridPane.setConstraints(searchNow, 0, 2);
         searchPane.getChildren().addAll(searchLabel, searchBar, searchNow);
 
         VBox resultPane = new VBox(5);
         resultPane.setAlignment(Pos.CENTER);
-        resultPane.setStyle("-fx-background-color: black");
         resultPane.prefWidthProperty().bind(window.widthProperty().multiply(.4));
 
         ToggleGroup parameters = new ToggleGroup();
@@ -266,7 +264,6 @@ public class TabGUI extends Application{
         borderPane.setRight(resultPane);
 
         Scene sceneSearch = new Scene(borderPane, stageW, stageH);
-        sceneSearch.getStylesheets().add(TabGUI.class.getResource("AddStyle.css").toExternalForm());
 
         // Query database for search parameters
         searchNow.setOnAction(e -> {
@@ -309,9 +306,11 @@ public class TabGUI extends Application{
 
         Button backButton = new Button("<- Back");
         backButton.setOnAction(e -> window.setScene(scene));
+
         Button editEntry = new Button("Edit entry");
+        editEntry.setOnAction(e -> window.setScene(Edit(editEntry.getScene())));
+
         Button deleteEntry = new Button("Delete entry");
-        deleteEntry.setOnAction(e -> DataEntry.Delete(ei));
 
         Label idNum = new Label("ID: " + ei.getId());
         content.getChildren().add(idNum);
@@ -323,8 +322,38 @@ public class TabGUI extends Application{
         BorderPane borderpane = new BorderPane();
         borderpane.setLeft(back);
         borderpane.setCenter(content);
+
+        deleteEntry.setOnAction(e -> {
+            borderpane.getChildren().removeAll(content, back);
+            VBox successfulDelete = new VBox();
+            successfulDelete.setAlignment(Pos.CENTER);
+            Label label = new Label("Entry: " +ei.getTitle()+ " deleted.");
+            successfulDelete.getChildren().add(label);
+            borderpane.setLeft(backButton(Search()));
+            borderpane.setCenter(successfulDelete);
+            DataEntry.Delete(ei);
+        });
+
         Scene results = new Scene(borderpane, stageW, stageH);
         return results;
+    }
+
+    private VBox backButton(Scene scene){
+        VBox backPane = new VBox();
+        backPane.prefWidthProperty().bind(window.widthProperty().multiply(.2));
+        backPane.setAlignment(Pos.CENTER);
+        backPane.setStyle("-fx-background-color: yellow");
+        Button back = new Button("<- back");
+        backPane.getChildren().add(back);
+        back.setOnAction(e -> window.setScene(scene));
+        return backPane;
+    }
+
+    private Scene Edit(Scene scene){
+        BorderPane borderPane = new BorderPane();
+        borderPane.setLeft(backButton(scene));
+        Scene edit = new Scene(borderPane, stageW, stageH);
+        return edit;
     }
 
 }

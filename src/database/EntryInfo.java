@@ -8,16 +8,16 @@ import java.io.ByteArrayOutputStream;
 import javax.imageio.ImageIO;
 
 public class EntryInfo {
-    int         id, 
-                year;
+    private int         id, 
+                        year;
 
-    String      title, titleAlias, 
-                author, authorAlias, 
-                workType, 
-                language;
+    private String      title, titleAlias, 
+                        author, authorAlias, 
+                        workType, 
+                        language;
 
-    ImageView   image;
-    byte[]      bimage;
+    private ImageView   image;
+    private byte[]      bimage;
 
     public EntryInfo(){}
     public EntryInfo(String title, String titleAlias, String author, String authorAlias, int year, String workType, String language, ImageView image){
