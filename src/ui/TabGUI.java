@@ -37,7 +37,7 @@ public class TabGUI extends Application{
         window.setTitle("Anime Tab!");
         window.setResizable(false);
 
-        HomeScene();
+        window.setScene(HomeScene());
 
         window.show();
     }
@@ -59,28 +59,34 @@ public class TabGUI extends Application{
     private VBox MenuActions(){
         VBox choices = new VBox(10);
 
-        Button add = new Button("Add New Entry");
+        Button add = new Button("Add new entry");
         add.setOnAction(e -> window.setScene(AddEntry()));
 
-        Button edit = new Button("Edit Entry");
-        //edit.setOnAction(e -> window.setScene(sceneEdit));
-
-        Button search = new Button("Search");
+        Button search = new Button("Search and Manage");
         search.setOnAction(e -> window.setScene(Search()));
 
         choices.setAlignment(Pos.CENTER_LEFT);
         choices.prefWidthProperty().bind(window.widthProperty().multiply(.2));
-        choices.getChildren().addAll(add, edit, search);
+        choices.getChildren().addAll(add, search);
 
         return choices;
     }
 
     private Scene HomeScene(){
         BorderPane main = new BorderPane();
+
+        VBox settingsPane = new VBox(10);
+        settingsPane.setAlignment(Pos.CENTER_RIGHT);
+
+        Button settings = new Button("Settings");
+        settings.setOnAction(e -> window.setScene(Settings()));
+        settingsPane.getChildren().add(settings);
+
         main.setLeft(MenuActions());
+        main.setBottom(settingsPane);
+
         Scene home = new Scene(main, stageW, stageH);
         home.getStylesheets().add(TabGUI.class.getResource("HomeStyle.css").toExternalForm());
-        window.setScene(home);
 
         return home;
     }
@@ -223,16 +229,12 @@ public class TabGUI extends Application{
         searchPane.setAlignment(Pos.CENTER);
         searchPane.prefWidthProperty().bind(window.widthProperty().multiply(.4));
     
-        Label result = new Label("Results:");
-        TextArea results = new TextArea();
-        results.setMaxHeight(150);
-        results.setMaxWidth(300);
-        results.setDisable(true);
+        Label result = new Label();
 
         Label searchLabel = new Label("Search:");
         searchPane.setConstraints(searchLabel, 0, 0);
 
-        TextField searchBar = new TextField("Search by title, author, language, etc . . .");
+        TextField searchBar = new TextField();
         searchPane.setConstraints(searchBar, 0, 1);
 
         Button searchNow = new Button("Search!");
@@ -241,6 +243,7 @@ public class TabGUI extends Application{
 
         VBox resultPane = new VBox(5);
         resultPane.setAlignment(Pos.CENTER);
+        resultPane.setStyle("-fx-background-color: black");
         resultPane.prefWidthProperty().bind(window.widthProperty().multiply(.4));
 
         ToggleGroup parameters = new ToggleGroup();
@@ -255,25 +258,7 @@ public class TabGUI extends Application{
         language.setToggleGroup(parameters);
         workType.setToggleGroup(parameters);
 
-        resultPane.getChildren().addAll(result, results);
-
-        // Query database for search parameters
-        searchNow.setOnAction(e -> {
-            results.clear();
-            String query = searchBar.getText();
-            if (query.isBlank())
-                return;
-            else{
-                ArrayList<EntryInfo> queryResults = DataEntry.View(query);
-                if (queryResults.isEmpty()){
-                    results.appendText("No results found.");
-                } else {
-                    for (EntryInfo ei : queryResults){
-                        results.appendText(ei.getTitle() + "\n");
-                    }
-                }
-            }
-        });
+        resultPane.getChildren().addAll(result);
         
         BorderPane borderPane = new BorderPane();
         borderPane.setLeft(ReturnHome());
@@ -281,9 +266,65 @@ public class TabGUI extends Application{
         borderPane.setRight(resultPane);
 
         Scene sceneSearch = new Scene(borderPane, stageW, stageH);
-        window.setScene(sceneSearch);
-
         sceneSearch.getStylesheets().add(TabGUI.class.getResource("AddStyle.css").toExternalForm());
+
+        // Query database for search parameters
+        searchNow.setOnAction(e -> {
+            String query = searchBar.getText();
+            if (query.isBlank())
+                return;
+            else{
+                ArrayList<EntryInfo> queryResults = DataEntry.View(query);
+                if (queryResults.isEmpty()){
+                } else {
+                    int resultCount = 0;
+                    for (EntryInfo ei : queryResults){
+                        resultCount++;
+                        Hyperlink resultLink = new Hyperlink(ei.getTitle() + "\n");
+                        resultLink.setOnAction(event -> {
+                            window.setScene(Results(ei, sceneSearch));
+                        });
+
+                        result.setText("Result(s): " + resultCount);
+                        resultPane.getChildren().add(resultLink);
+                    }
+                }
+            }
+        });
+
         return sceneSearch;
     }
+
+    private Scene Settings(){
+        BorderPane borderpane = new BorderPane();
+        borderpane.setLeft(ReturnHome());
+        Scene settings = new Scene(borderpane, stageW, stageH);
+        return settings;
+    }
+
+    private Scene Results(EntryInfo ei, Scene scene){
+        VBox back = new VBox(10);
+        GridPane content = new GridPane();
+        back.setStyle("-fx-background-color: yellow");
+
+        Button backButton = new Button("<- Back");
+        backButton.setOnAction(e -> window.setScene(scene));
+        Button editEntry = new Button("Edit entry");
+        Button deleteEntry = new Button("Delete entry");
+        deleteEntry.setOnAction(e -> DataEntry.Delete(ei));
+
+        Label idNum = new Label("ID: " + ei.getId());
+        content.getChildren().add(idNum);
+
+        back.setAlignment(Pos.CENTER);
+        back.prefWidthProperty().bind(window.widthProperty().multiply(.2));
+        back.getChildren().addAll(backButton, editEntry, deleteEntry);
+
+        BorderPane borderpane = new BorderPane();
+        borderpane.setLeft(back);
+        borderpane.setCenter(content);
+        Scene results = new Scene(borderpane, stageW, stageH);
+        return results;
+    }
+
 }

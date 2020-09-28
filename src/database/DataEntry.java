@@ -61,7 +61,7 @@ public class DataEntry {
             ResultSet rs = statement.executeQuery();
 
             while(rs.next()){
-                EntryInfo newFind = new EntryInfo(rs.getString("title"), rs.getString("title_alias"), rs.getString("author"), rs.getString("author_alias"), rs.getInt("year"), rs.getString("work_type"), rs.getString("language"), rs.getBytes("cover"));
+                EntryInfo newFind = new EntryInfo(rs.getInt("work_id"), rs.getString("title"), rs.getString("title_alias"), rs.getString("author"), rs.getString("author_alias"), rs.getInt("year"), rs.getString("work_type"), rs.getString("language"), rs.getBytes("cover"));
                 entries.add(newFind);
             }
             connection.close();
@@ -92,13 +92,27 @@ public class DataEntry {
                 Random rand = new Random();
                 id = rand.nextInt(20000);
             }while(existingIDs.contains(id));
+            entry.setId(id);
 
             // Insert entry into database
-            PreparedStatement enterData = connection.prepareStatement("INSERT INTO work VALUES('"+id+"', '"+entry.title+"', '"+entry.titleAlias+"', + '"+entry.author+"', '"+entry.authorAlias+"', '"+entry.year+"', '"+entry.workType+"', '"+entry.language+"', '"+entry.image+"')");
+            PreparedStatement enterData = connection.prepareStatement("INSERT INTO work VALUES('"+entry.id+"', '"+entry.title+"', '"+entry.titleAlias+"', + '"+entry.author+"', '"+entry.authorAlias+"', '"+entry.year+"', '"+entry.workType+"', '"+entry.language+"', '"+entry.image+"')");
             enterData.executeUpdate();
             System.out.println("NEW ENTRY SUCCESSFUL!");
             connection.close();
             System.out.println("Connection closed.");
+        } catch (Exception e){
+            System.out.println(e);
+        }
+    }
+
+    public static void Delete(EntryInfo entry){
+        Connection connection;
+        try{
+            connection = getConnection();
+            PreparedStatement statement = connection.prepareStatement("DELETE FROM work WHERE work_id = '"+entry.id+"'");
+            statement.executeUpdate();
+            System.out.println("Entry deleted.");
+            connection.close();
         } catch (Exception e){
             System.out.println(e);
         }

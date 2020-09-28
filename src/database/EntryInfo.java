@@ -42,6 +42,18 @@ public class EntryInfo {
         this.bimage = bimage;
     }
 
+    public EntryInfo(int id, String title, String titleAlias, String author, String authorAlias, int year, String workType, String language, byte[] bimage){
+        this.id = id;
+        this.title = title;
+        this.titleAlias = titleAlias;
+        this.author = author;
+        this.authorAlias = authorAlias;
+        this.year = year;
+        this.workType = workType;
+        this.language = language;
+        this.bimage = bimage;
+    }
+
     private void imgToBlob(ImageView image){
         BufferedImage bimage = SwingFXUtils.fromFXImage(image.getImage(), null);
         ByteArrayOutputStream s = new ByteArrayOutputStream();
@@ -54,6 +66,14 @@ public class EntryInfo {
         } catch (Exception e){
             System.out.println("Image handling error.");
         }
+    }
+
+    public void setId(int id){
+        this.id = id;
+    }
+
+    public int getId(){
+        return id;
     }
 
     public void setTitle(String title){
