@@ -1,11 +1,6 @@
 package database;
 
-import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.ImageView;
-
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import javax.imageio.ImageIO;
 
 public class EntryInfo {
     private int         id, 
@@ -28,7 +23,19 @@ public class EntryInfo {
         this.year = year;
         this.workType = workType;
         this.language = language;
-        imgToBlob(image);
+        this.image = image;
+    }
+
+    public EntryInfo(int id, String title, String titleAlias, String author, String authorAlias, int year, String workType, String language, ImageView image){
+        this.id = id;
+        this.title = title;
+        this.titleAlias = titleAlias;
+        this.author = author;
+        this.authorAlias = authorAlias;
+        this.year = year;
+        this.workType = workType;
+        this.language = language;
+        this.image = image;
     }
 
     public EntryInfo(String title, String titleAlias, String author, String authorAlias, int year, String workType, String language, byte[] bimage){
@@ -52,20 +59,6 @@ public class EntryInfo {
         this.workType = workType;
         this.language = language;
         this.bimage = bimage;
-    }
-
-    private void imgToBlob(ImageView image){
-        BufferedImage bimage = SwingFXUtils.fromFXImage(image.getImage(), null);
-        ByteArrayOutputStream s = new ByteArrayOutputStream();
-
-        try{
-            ImageIO.write(bimage, "png", s);
-            byte[] imgBlob = s.toByteArray();
-            s.close();
-            this.bimage = imgBlob;
-        } catch (Exception e){
-            System.out.println("Image handling error.");
-        }
     }
 
     public void setId(int id){
@@ -133,7 +126,7 @@ public class EntryInfo {
     }
 
     public void setImage(ImageView image){
-        imgToBlob(image);
+        this.image = image;
     }
 
     public ImageView getImage(){
@@ -142,5 +135,9 @@ public class EntryInfo {
 
     public void setBimage(byte[] bimage){
         this.bimage = bimage;
+    }
+
+    public byte[] getBimage(){
+        return bimage;
     }
 }

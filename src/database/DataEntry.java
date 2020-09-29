@@ -3,6 +3,14 @@ package database;
 import java.io.*;
 import java.util.*;
 
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.Image;
+
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import javax.imageio.ImageIO;
+
 import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -61,7 +69,13 @@ public class DataEntry {
             ResultSet rs = statement.executeQuery();
 
             while(rs.next()){
-                EntryInfo newFind = new EntryInfo(rs.getInt("work_id"), rs.getString("title"), rs.getString("title_alias"), rs.getString("author"), rs.getString("author_alias"), rs.getInt("year"), rs.getString("work_type"), rs.getString("language"), rs.getBytes("cover"));
+                ImageView imgv = new ImageView();
+                InputStream is = rs.getBinaryStream("cover");
+                Image image = new Image(is);
+                is.close();
+                imgv.setImage(image);
+
+                EntryInfo newFind = new EntryInfo(rs.getInt("work_id"), rs.getString("title"), rs.getString("title_alias"), rs.getString("author"), rs.getString("author_alias"), rs.getInt("year"), rs.getString("work_type"), rs.getString("language"), imgv);
                 entries.add(newFind);
             }
             connection.close();
@@ -95,7 +109,13 @@ public class DataEntry {
             entry.setId(id);
 
             // Insert entry into database
-            PreparedStatement enterData = connection.prepareStatement("INSERT INTO work VALUES('"+entry.getId()+"', '"+entry.getTitle()+"', '"+entry.getTitleAlias()+"', + '"+entry.getAuthor()+"', '"+entry.getAuthorAlias()+"', '"+entry.getYear()+"', '"+entry.getWorkType()+"', '"+entry.getLanguage()+"', '"+entry.getImage()+"')");
+            BufferedImage bimage = SwingFXUtils.fromFXImage(entry.getImage().getImage(), null);
+            ByteArrayOutputStream s = new ByteArrayOutputStream();
+            ImageIO.write(bimage, "jpg", s);  
+            byte[] imgBlob = s.toByteArray();
+            s.close();
+
+            PreparedStatement enterData = connection.prepareStatement("INSERT INTO work VALUES('"+entry.getId()+"', '"+entry.getTitle()+"', '"+entry.getTitleAlias()+"', + '"+entry.getAuthor()+"', '"+entry.getAuthorAlias()+"', '"+entry.getYear()+"', '"+entry.getWorkType()+"', '"+entry.getLanguage()+"', '"+imgBlob+"')");
             enterData.executeUpdate();
             System.out.println("NEW ENTRY SUCCESSFUL!");
             connection.close();

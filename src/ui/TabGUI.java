@@ -158,6 +158,7 @@ public class TabGUI extends Application{
                 img.setFitWidth(300);
                 img.setPreserveRatio(true);
                 imageURL.setText(file.toURI().toString());
+                System.out.println(imageURL.getText());
             }
         });
 
@@ -271,6 +272,7 @@ public class TabGUI extends Application{
             if (query.isBlank())
                 return;
             else{
+                resultPane.getChildren().clear();
                 ArrayList<EntryInfo> queryResults = DataEntry.View(query);
                 if (queryResults.isEmpty()){
                 } else {
@@ -281,7 +283,6 @@ public class TabGUI extends Application{
                         resultLink.setOnAction(event -> {
                             window.setScene(Results(ei, sceneSearch));
                         });
-
                         result.setText("Result(s): " + resultCount);
                         resultPane.getChildren().add(resultLink);
                     }
@@ -301,8 +302,27 @@ public class TabGUI extends Application{
 
     private Scene Results(EntryInfo ei, Scene scene){
         VBox back = new VBox(10);
-        GridPane content = new GridPane();
+        VBox Right = new VBox(10);
+        Right.setAlignment(Pos.CENTER);
+        Right.prefWidthProperty().bind(window.widthProperty().multiply(.4));
+        VBox Center = new VBox(20);
+        Center.setAlignment(Pos.CENTER);
+        Center.prefWidthProperty().bind(window.widthProperty().multiply(.4));
+        BorderPane borderpane = new BorderPane();
         back.setStyle("-fx-background-color: yellow");
+        
+        Label title = new Label(ei.getTitle());
+        Right.getChildren().addAll(ei.getImage(), title);
+
+        Label id = new Label(String.valueOf(ei.getId()));
+        Label titleAlias = new Label(ei.getTitleAlias());
+        Label author = new Label(ei.getAuthor());
+        Label authorAlias = new Label(ei.getAuthorAlias());
+        Label year = new Label(String.valueOf(ei.getYear()));
+        Label workType = new Label(ei.getWorkType());
+        Label language = new Label(ei.getLanguage());
+
+        Center.getChildren().addAll(id, titleAlias, author, authorAlias, year, workType, language);
 
         Button backButton = new Button("<- Back");
         backButton.setOnAction(e -> window.setScene(scene));
@@ -312,19 +332,16 @@ public class TabGUI extends Application{
 
         Button deleteEntry = new Button("Delete entry");
 
-        Label idNum = new Label("ID: " + ei.getId());
-        content.getChildren().add(idNum);
-
         back.setAlignment(Pos.CENTER);
         back.prefWidthProperty().bind(window.widthProperty().multiply(.2));
         back.getChildren().addAll(backButton, editEntry, deleteEntry);
 
-        BorderPane borderpane = new BorderPane();
         borderpane.setLeft(back);
-        borderpane.setCenter(content);
+        borderpane.setRight(Right);
+        borderpane.setCenter(Center);
 
         deleteEntry.setOnAction(e -> {
-            borderpane.getChildren().removeAll(content, back);
+            borderpane.getChildren().removeAll(Center, back, Right);
             VBox successfulDelete = new VBox();
             successfulDelete.setAlignment(Pos.CENTER);
             Label label = new Label("Entry: " +ei.getTitle()+ " deleted.");
