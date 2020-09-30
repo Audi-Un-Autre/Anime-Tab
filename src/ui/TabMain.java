@@ -1,47 +1,28 @@
 package ui;
 
-import database.*;
-
-import java.util.Vector;
-import java.util.Calendar;
-import java.util.ArrayList;
-import java.io.*;
-
 import javafx.application.Application;
-
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.Parent;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-
 import javafx.stage.Stage;
-import javafx.stage.FileChooser;
 
-import javafx.scene.layout.*;
-import javafx.geometry.*;
-import javafx.collections.*;
-
-public class TabGUI extends Application{
-    Stage               window;
-    final int           stageH = 600,
-                        stageW = 1000;
+public class TabMain extends Application{
     
     public static void main(String[] args) throws Exception{
-        launch();
+        launch(args);
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        window = primaryStage;
-        window.getIcons().add(new Image(TabGUI.class.getResourceAsStream("gon.png")));
-        window.setTitle("Anime Tab!");
-        window.setResizable(false);
-
-        window.setScene(HomeScene());
-
-        window.show();
+        Parent root = FXMLLoader.load(getClass().getResource("gui.fxml"));
+        primaryStage.getIcons().add(new Image(TabMain.class.getResourceAsStream("gon.png")));
+        primaryStage.setTitle("Anime Tab!");
+        primaryStage.setResizable(false);
+        primaryStage.setScene(new Scene(root, 1000, 600));
+        primaryStage.show();
     }
-
+/*
     private VBox ReturnHome(){
         VBox aboveChoices = new VBox();
         aboveChoices.setStyle("-fx-background-color: yellow");
@@ -372,5 +353,5 @@ public class TabGUI extends Application{
         Scene edit = new Scene(borderPane, stageW, stageH);
         return edit;
     }
-
+*/
 }
