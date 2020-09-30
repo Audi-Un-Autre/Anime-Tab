@@ -15,8 +15,8 @@ public class TabMain extends Application{
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("gui.fxml"));
-        primaryStage.getIcons().add(new Image(TabMain.class.getResourceAsStream("gon.png")));
+        Parent root = FXMLLoader.load(getClass().getResource("scenes/MainScene.fxml"));
+        primaryStage.getIcons().add(new Image(TabMain.class.getResourceAsStream("design/gon.png")));
         primaryStage.setTitle("Anime Tab!");
         primaryStage.setResizable(false);
         primaryStage.setScene(new Scene(root, 1000, 600));
