@@ -13,11 +13,11 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.controllers.NewEntryController">
+<BorderPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.controllers.NewEntryController">
    <left>
       <VBox alignment="CENTER" prefHeight="600.0" prefWidth="175.0" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" text="&lt;- back" />
+            <Button fx:id="backButton" mnemonicParsing="false" onAction="#BackButtonClicked" text="&lt;- back" />
          </children>
       </VBox>
    </left>
@@ -44,20 +44,20 @@
                   <Label alignment="CENTER" text="Title" />
                   <Label alignment="CENTER" text="Title Alias" GridPane.rowIndex="1" />
                   <Label alignment="CENTER" text="Author" GridPane.rowIndex="2" />
-                  <TextField GridPane.columnIndex="1" />
-                  <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <TextField fx:id="title" GridPane.columnIndex="1" />
+                  <TextField fx:id="titleAlias" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <TextField fx:id="author" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   <Label alignment="CENTER" text="Author alias" GridPane.rowIndex="3" />
                   <Label alignment="CENTER" text="Year" GridPane.rowIndex="4" />
                   <Label alignment="CENTER" text="Format" GridPane.rowIndex="5" />
                   <Label alignment="CENTER" text="Language" GridPane.rowIndex="6" />
                   <Label alignment="CENTER" text="Image" GridPane.rowIndex="7" />
-                  <Button mnemonicParsing="false" text="Browse . . ." GridPane.columnIndex="2" GridPane.rowIndex="7" />
-                  <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                  <ChoiceBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                  <ChoiceBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                  <ChoiceBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                  <TextField alignment="CENTER" disable="true" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                  <Button fx:id="browseButton" mnemonicParsing="false" onAction="#BrowseButtonClicked" text="Browse . . ." GridPane.columnIndex="2" GridPane.rowIndex="7" />
+                  <TextField fx:id="authorAlias" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <ChoiceBox fx:id="years" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                  <ChoiceBox fx:id="formats" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                  <ChoiceBox fx:id="languages" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                  <TextField fx:id="imageAddress" alignment="CENTER" disable="true" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="7" />
                </children>
             </GridPane>
          </children>
@@ -71,18 +71,18 @@
          <children>
             <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="250.0" translateY="-50.0">
                <children>
-                  <ImageView fitHeight="256.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="imageView" fitHeight="256.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true" />
                </children>
             </AnchorPane>
             <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="275.0">
                <children>
-                  <Label fx:id="title" layoutX="14.0" layoutY="14.0" text="Label" />
-                  <Label fx:id="titleAlias" layoutX="14.0" layoutY="31.0" text="Label" />
-                  <Label fx:id="author" layoutX="14.0" layoutY="48.0" text="Label" />
-                  <Label fx:id="authorAlias" layoutX="14.0" layoutY="65.0" text="Label" />
-                  <Label fx:id="year" layoutX="14.0" layoutY="82.0" text="Label" />
-                  <Label fx:id="workType" layoutX="14.0" layoutY="99.0" text="Label" />
-                  <Label fx:id="language" layoutX="14.0" layoutY="116.0" text="Label" />
+                  <Label fx:id="titleLabel" layoutX="14.0" layoutY="14.0" text="Label" />
+                  <Label fx:id="titleAliasLabel" layoutX="14.0" layoutY="31.0" text="Label" />
+                  <Label fx:id="authorLabel" layoutX="14.0" layoutY="48.0" text="Label" />
+                  <Label fx:id="authorAliasLabel" layoutX="14.0" layoutY="65.0" text="Label" />
+                  <Label fx:id="yearLabel" layoutX="14.0" layoutY="82.0" text="Label" />
+                  <Label fx:id="workTypeLabel" layoutX="14.0" layoutY="99.0" text="Label" />
+                  <Label fx:id="languageLabel" layoutX="14.0" layoutY="116.0" text="Label" />
                </children>
             </AnchorPane>
          </children>

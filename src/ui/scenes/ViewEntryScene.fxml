@@ -13,21 +13,20 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.controllers.ViewEntryController">
+<BorderPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.controllers.ViewEntryController">
    <left>
       <VBox alignment="CENTER" prefHeight="200.0" prefWidth="175.0" spacing="5.0" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" text="Edit entry" translateY="20.0" />
-            <Button mnemonicParsing="false" text="Delete entry" translateY="20.0" />
-            <Button mnemonicParsing="false" text="&lt;- back" translateY="150.0" />
+            <Button fx:id="editEntryButton" mnemonicParsing="false" onAction="#EditClicked" text="Edit entry" translateY="20.0" />
+            <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#DeleteClicked" text="Delete entry" translateY="20.0" />
+            <Button fx:id="backButton" mnemonicParsing="false" onAction="#BackButtonClicked" text="&lt;- back" translateY="150.0" />
          </children>
       </VBox>
    </left>
    <center>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <ImageView fitHeight="352.0" fitWidth="312.0" layoutX="479.0" layoutY="108.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="imageView" fitHeight="352.0" fitWidth="312.0" layoutX="479.0" layoutY="108.0" pickOnBounds="true" preserveRatio="true" />
             <Separator layoutX="421.0" layoutY="11.0" orientation="VERTICAL" prefHeight="577.0" prefWidth="45.0" />
             <GridPane alignment="CENTER" layoutX="48.0" layoutY="206.0" prefHeight="303.0" prefWidth="370.0">
               <columnConstraints>
@@ -44,29 +43,31 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Label text="Title" />
-                  <Label text="Author" GridPane.rowIndex="1" />
-                  <Label text="Year" GridPane.rowIndex="2" />
-                  <Label text="Format" GridPane.rowIndex="3" />
-                  <Label text="Language" GridPane.rowIndex="4" />
-                  <Label disable="true" text="Image" GridPane.rowIndex="5" />
-                  <Button alignment="CENTER" disable="true" mnemonicParsing="false" text=". . ." GridPane.columnIndex="2" GridPane.rowIndex="5" />
-                  <TextField disable="true" prefHeight="25.0" prefWidth="203.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                  <TextField disable="true" GridPane.columnIndex="1" />
-                  <TextField disable="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <Label text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <Label text="Label" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                  <Label text="Label" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                  <ChoiceBox disable="true" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <ChoiceBox disable="true" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                  <ChoiceBox disable="true" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                  <Label text="Label" GridPane.columnIndex="1" />
-                  <Label text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label fx:id="titleLabel" text="Title" />
+                  <Label fx:id="authorLabel" text="Author" GridPane.rowIndex="1" />
+                  <Label fx:id="yearLabel" text="Year" GridPane.rowIndex="2" />
+                  <Label fx:id="formatLabel" text="Format" GridPane.rowIndex="3" />
+                  <Label fx:id="languageLabel" text="Language" GridPane.rowIndex="4" />
+                  <Label fx:id="imageLabel" disable="true" text="Image" GridPane.rowIndex="5" />
+                  <Button fx:id="browseButton" alignment="CENTER" disable="true" mnemonicParsing="false" onAction="#BrowseButtonClicked" text=". . ." GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                  <TextField fx:id="imageAddress" disable="true" prefHeight="25.0" prefWidth="203.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                  <TextField fx:id="editTitleLabel" disable="true" GridPane.columnIndex="1" />
+                  <TextField fx:id="editAuthorLabel" disable="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label fx:id="yearLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Label fx:id="formatLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <Label fx:id="languageLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                  <Label fx:id="title" text="Label" GridPane.columnIndex="1" />
+                  <Label fx:id="author" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <ChoiceBox fx:id="editLanguage" disable="true" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                  <ChoiceBox fx:id="editYear" disable="true" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <ChoiceBox fx:id="editFormat" disable="true" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                </children>
             </GridPane>
-            <Label layoutX="472.0" layoutY="57.0" text="ID:" />
-            <Label layoutX="479.0" layoutY="484.0" text="Title" />
-            <Button disable="true" layoutX="176.0" layoutY="531.0" mnemonicParsing="false" text="cancel edit" />
+            <Label disable="true" layoutX="472.0" layoutY="57.0" text="ID:" />
+            <Label disable="true" layoutX="479.0" layoutY="484.0" text="Title" />
+            <Button fx:id="cancelButton" disable="true" layoutX="176.0" layoutY="531.0" mnemonicParsing="false" onAction="#CancelButtonClicked" text="cancel edit" />
+            <Label fx:id="idView" disable="true" layoutX="491.0" layoutY="57.0" text="Label" />
+            <Label fx:id="titleView" disable="true" layoutX="512.0" layoutY="484.0" text="Label" />
          </children>
       </AnchorPane>
    </center>

@@ -16,19 +16,19 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.controllers.SearchManageController">
+<BorderPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.controllers.SearchManageController">
    <left>
       <VBox alignment="CENTER" prefHeight="200.0" prefWidth="175.0" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" text="&lt;- back" />
+            <Button fx:id="backButton" mnemonicParsing="false" onAction="#BackButtonClicked" text="&lt;- back" />
          </children>
       </VBox>
    </left>
    <center>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <TextField alignment="BASELINE_LEFT" layoutX="18.0" layoutY="537.0" prefHeight="25.0" prefWidth="477.0" translateY="-75.0" />
-            <ListView layoutX="18.0" layoutY="57.0" prefHeight="384.0" prefWidth="476.0" />
+            <TextField fx:id="search" alignment="BASELINE_LEFT" layoutX="18.0" layoutY="537.0" prefHeight="25.0" prefWidth="477.0" translateY="-75.0" />
+            <ListView fx:id="resultList" layoutX="18.0" layoutY="57.0" prefHeight="384.0" prefWidth="476.0" />
             <ScrollBar layoutX="480.0" layoutY="57.0" orientation="VERTICAL" prefHeight="383.0" prefWidth="14.0" />
             <Label layoutX="18.0" layoutY="497.0" text="Filter:" />
             <GridPane layoutX="63.0" layoutY="497.0" prefHeight="90.0" prefWidth="432.0">
@@ -44,10 +44,10 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Button mnemonicParsing="false" text="search" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                  <ChoiceBox disable="true" prefWidth="150.0" GridPane.columnIndex="2" />
-                  <ChoiceBox disable="true" prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                  <ChoiceBox disable="true" prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                  <Button fx:id="searchButton" mnemonicParsing="false" onAction="#SearchButtonClicked" text="search" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                  <ChoiceBox fx:id="years" disable="true" prefWidth="150.0" GridPane.columnIndex="2" />
+                  <ChoiceBox fx:id="workTypes" disable="true" prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                  <ChoiceBox fx:id="languages" disable="true" prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
                   <RadioButton mnemonicParsing="false" text="title" />
                   <RadioButton mnemonicParsing="false" text="author" GridPane.rowIndex="1" />
                   <RadioButton mnemonicParsing="false" text="year" GridPane.columnIndex="1" />
@@ -61,7 +61,7 @@
    <right>
       <AnchorPane prefHeight="200.0" prefWidth="315.0" BorderPane.alignment="CENTER">
          <children>
-            <ImageView fitHeight="297.0" fitWidth="209.0" layoutX="51.0" layoutY="37.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="imageView" fitHeight="297.0" fitWidth="209.0" layoutX="51.0" layoutY="37.0" pickOnBounds="true" preserveRatio="true" />
             <Separator layoutX="-11.0" layoutY="12.0" orientation="VERTICAL" prefHeight="577.0" prefWidth="23.0" />
             <GridPane disable="true" layoutX="17.0" layoutY="349.0" prefHeight="230.0" prefWidth="280.0">
               <columnConstraints>
@@ -79,14 +79,22 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Label text="ID:" />
-                  <Label text="Title" GridPane.rowIndex="1" />
-                  <Label text="Title alias" GridPane.rowIndex="2" />
-                  <Label layoutX="10.0" layoutY="78.0" text="Author" GridPane.rowIndex="3" />
-                  <Label layoutX="10.0" layoutY="108.0" text="Author alias" GridPane.rowIndex="4" />
-                  <Label layoutX="10.0" layoutY="138.0" text="Year" GridPane.rowIndex="5" />
-                  <Label layoutX="10.0" layoutY="17.0" text="Format" GridPane.rowIndex="6" />
-                  <Label layoutX="10.0" layoutY="198.0" text="Language" GridPane.rowIndex="7" />
+                  <Label fx:id="idLabel" text="ID:" />
+                  <Label fx:id="titleLabel" text="Title" GridPane.rowIndex="1" />
+                  <Label fx:id="titleAliasLabel" text="Title alias" GridPane.rowIndex="2" />
+                  <Label fx:id="authorLabel" layoutX="10.0" layoutY="78.0" text="Author" GridPane.rowIndex="3" />
+                  <Label fx:id="authorAliasLabel" layoutX="10.0" layoutY="108.0" text="Author alias" GridPane.rowIndex="4" />
+                  <Label fx:id="yearLabel" layoutX="10.0" layoutY="138.0" text="Year" GridPane.rowIndex="5" />
+                  <Label fx:id="formatLabel" layoutX="10.0" layoutY="17.0" text="Format" GridPane.rowIndex="6" />
+                  <Label fx:id="languageLabel" layoutX="10.0" layoutY="198.0" text="Language" GridPane.rowIndex="7" />
+                  <Label fx:id="id" text="Label" GridPane.columnIndex="1" />
+                  <Label fx:id="title" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label fx:id="titleAlias" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Label fx:id="author" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <Label fx:id="authorAlias" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                  <Label fx:id="year" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                  <Label fx:id="workType" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                  <Label fx:id="language" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="7" />
                </children>
             </GridPane>
          </children>
