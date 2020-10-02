@@ -3,18 +3,11 @@ package database;
 import java.io.*;
 import java.util.*;
 
-import javafx.embed.swing.SwingFXUtils;
-import javafx.scene.image.ImageView;
-import javafx.scene.image.Image;
-
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import javax.imageio.ImageIO;
-
 import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+
 import org.yaml.snakeyaml.*;
 
 public class DataEntry {    
@@ -59,83 +52,69 @@ public class DataEntry {
         return null;
     }
 
-    public static ArrayList<EntryInfo> View(String query){
-        Connection connection;
+    public static ArrayList<EntryInfo> View(String query) throws Exception{
         ArrayList<EntryInfo> entries = new ArrayList<EntryInfo>();
 
-        try{
-            connection = getConnection();
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM work WHERE '"+query+"' IN (title, title_alias, author, author_alias, year, work_type, language)");
-            ResultSet rs = statement.executeQuery();
+        Connection connection = getConnection();
+        PreparedStatement statement = connection.prepareStatement("SELECT * FROM work WHERE '"+query+"' IN (title, title_alias, author, author_alias, year, work_type, language)");
+        ResultSet rs = statement.executeQuery();
 
-            while(rs.next()){
-                ImageView imgv = new ImageView();
-                InputStream is = rs.getBinaryStream("cover");
-                Image image = new Image(is);
-                is.close();
-                imgv.setImage(image);
-
-                EntryInfo newFind = new EntryInfo(rs.getInt("work_id"), rs.getString("title"), rs.getString("title_alias"), rs.getString("author"), rs.getString("author_alias"), rs.getInt("year"), rs.getString("work_type"), rs.getString("language"), imgv);
-                entries.add(newFind);
-            }
-            connection.close();
-            System.out.println("Connection closed.");
-        } catch(Exception e) {
-            System.out.println(e);
+        while(rs.next()){
+            EntryInfo newFind = new EntryInfo(rs.getInt("work_id"), rs.getString("title"), rs.getString("title_alias"), rs.getString("author"), rs.getString("author_alias"), rs.getInt("year"), rs.getString("work_type"), rs.getString("language"), rs.getString("image"));
+            entries.add(newFind);
         }
+            
+        connection.close();
+        System.out.println("Connection closed.");
+
         return entries;
     }
 
-    public static void Add(EntryInfo entry){
-        Connection connection;
-        ResultSet rs;
-        int id;
+    public static void Add(EntryInfo entry) throws Exception{
+        Connection connection = getConnection();
 
-        try{
-            connection = getConnection();
-            PreparedStatement statement = connection.prepareStatement("SELECT work_id FROM work");
-            rs = statement.executeQuery();
-
-            // Get all existing primary key values
-            ArrayList<Integer> existingIDs = new ArrayList<Integer>();
-            while(rs.next())
-                existingIDs.add(rs.getInt("work_id"));
-
-            // Create random PK for new entry, checking against current PKs
-            do{
-                Random rand = new Random();
-                id = rand.nextInt(20000);
-            }while(existingIDs.contains(id));
-            entry.setId(id);
-
-            // Insert entry into database
-            BufferedImage bimage = SwingFXUtils.fromFXImage(entry.getImage().getImage(), null);
-            ByteArrayOutputStream s = new ByteArrayOutputStream();
-            ImageIO.write(bimage, "jpg", s);  
-            byte[] imgBlob = s.toByteArray();
-            s.close();
-
-            PreparedStatement enterData = connection.prepareStatement("INSERT INTO work VALUES('"+entry.getId()+"', '"+entry.getTitle()+"', '"+entry.getTitleAlias()+"', + '"+entry.getAuthor()+"', '"+entry.getAuthorAlias()+"', '"+entry.getYear()+"', '"+entry.getWorkType()+"', '"+entry.getLanguage()+"', '"+imgBlob+"')");
-            enterData.executeUpdate();
-            System.out.println("NEW ENTRY SUCCESSFUL!");
-            connection.close();
-            System.out.println("Connection closed.");
-        } catch (Exception e){
-            System.out.println(e);
-        }
+        PreparedStatement enterData = connection.prepareStatement("INSERT INTO work VALUES('"+entry.getId()+"', '"+entry.getTitle()+"', '"+entry.getTitleAlias()+"', + '"+entry.getAuthor()+"', '"+entry.getAuthorAlias()+"', '"+entry.getYear()+"', '"+entry.getWorkType()+"', '"+entry.getLanguage()+"', '"+entry.getImage()+"')");
+        enterData.executeUpdate();
+        System.out.println("NEW ENTRY SUCCESSFUL!");
+        connection.close();
+        System.out.println("Connection closed.");
     }
 
-    public static void Delete(EntryInfo entry){
-        Connection connection;
-        try{
-            connection = getConnection();
-            PreparedStatement statement = connection.prepareStatement("DELETE FROM work WHERE work_id = '"+entry.getId()+"'");
-            statement.executeUpdate();
-            System.out.println("Entry deleted.");
-            connection.close();
-        } catch (Exception e){
-            System.out.println(e);
-        }
+    public static void ModifyEntry(EntryInfo ei) throws Exception{
+        Connection connection = getConnection();
+        PreparedStatement statement = connection.prepareStatement("UPDATE work SET title = '"+ei.getTitle()+"', title_alias = '"+ei.getTitleAlias()+"', author = '"+ei.getAuthor()+"', author_alias = '"+ei.getAuthorAlias()+"', year = '"+ei.getYear()+"', work_type = '"+ei.getWorkType()+"', language = '"+ei.getLanguage()+"', image = '"+ei.getImage()+"' WHERE work_id = '"+ei.getId()+"'");
+        statement.executeUpdate();
+        System.out.println("Entry "+ei.getId()+" updated successfully.");
+        connection.close();
+    }
+
+    public static Integer CreateID() throws Exception{
+        int id;
+
+        // Create random PK for new entry, checking against current PKs
+        Connection connection = getConnection();
+        PreparedStatement statement = connection.prepareStatement("SELECT work_id FROM work");
+        ResultSet rs = statement.executeQuery();
+
+        // Get all existing primary key values
+        ArrayList<Integer> existingIDs = new ArrayList<Integer>();
+        while(rs.next())
+            existingIDs.add(rs.getInt("work_id"));
+
+        do{
+            Random rand = new Random();
+            id = rand.nextInt(20000);
+        }while(existingIDs.contains(id));
+
+        return id;
+    }
+
+    public static void Delete(EntryInfo entry) throws Exception{
+        Connection connection = getConnection();
+        PreparedStatement statement = connection.prepareStatement("DELETE FROM work WHERE work_id = '"+entry.getId()+"'");
+        statement.executeUpdate();
+        System.out.println("Entry deleted.");
+        connection.close();
     }
 }
 

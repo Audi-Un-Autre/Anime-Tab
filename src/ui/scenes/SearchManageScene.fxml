@@ -63,7 +63,7 @@
          <children>
             <ImageView fx:id="imageView" fitHeight="297.0" fitWidth="209.0" layoutX="51.0" layoutY="37.0" pickOnBounds="true" preserveRatio="true" />
             <Separator layoutX="-11.0" layoutY="12.0" orientation="VERTICAL" prefHeight="577.0" prefWidth="23.0" />
-            <GridPane disable="true" layoutX="17.0" layoutY="349.0" prefHeight="230.0" prefWidth="280.0">
+            <GridPane fx:id="infoGrid" layoutX="17.0" layoutY="349.0" prefHeight="230.0" prefWidth="280.0" visible="false">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="144.0" minWidth="10.0" prefWidth="96.0" />
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="203.0" minWidth="10.0" prefWidth="202.0" />

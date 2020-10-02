@@ -60,6 +60,8 @@
                   <TextField fx:id="imageAddress" alignment="CENTER" disable="true" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="7" />
                </children>
             </GridPane>
+            <Button fx:id="previewButton" mnemonicParsing="false" onAction="#PreviewButtonClicked" text="Preview" translateY="45.0" />
+            <Button fx:id="addButton" mnemonicParsing="false" onAction="#AddButtonClicked" text="Add Entry" translateY="50.0" />
          </children>
          <padding>
             <Insets left="75.0" />
@@ -69,12 +71,12 @@
    <right>
       <VBox alignment="CENTER" prefHeight="600.0" prefWidth="315.0" BorderPane.alignment="CENTER">
          <children>
-            <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="250.0" translateY="-50.0">
+            <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="250.0" translateY="25.0">
                <children>
                   <ImageView fx:id="imageView" fitHeight="256.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true" />
                </children>
             </AnchorPane>
-            <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="275.0">
+            <AnchorPane fx:id="metaAnchor" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="275.0" translateY="40.0" visible="false">
                <children>
                   <Label fx:id="titleLabel" layoutX="14.0" layoutY="14.0" text="Label" />
                   <Label fx:id="titleAliasLabel" layoutX="14.0" layoutY="31.0" text="Label" />

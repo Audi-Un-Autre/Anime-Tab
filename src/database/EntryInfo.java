@@ -1,7 +1,5 @@
 package database;
 
-import javafx.scene.image.ImageView;
-
 public class EntryInfo {
     private int         id, 
                         year;
@@ -9,24 +7,12 @@ public class EntryInfo {
     private String      title, titleAlias, 
                         author, authorAlias, 
                         workType, 
-                        language;
-
-    private ImageView   image;
-    private byte[]      bimage;
+                        language,
+                        image;
 
     public EntryInfo(){}
-    public EntryInfo(String title, String titleAlias, String author, String authorAlias, int year, String workType, String language, ImageView image){
-        this.title = title;
-        this.titleAlias = titleAlias;
-        this.author = author;
-        this.authorAlias = authorAlias;
-        this.year = year;
-        this.workType = workType;
-        this.language = language;
-        this.image = image;
-    }
 
-    public EntryInfo(int id, String title, String titleAlias, String author, String authorAlias, int year, String workType, String language, ImageView image){
+    public EntryInfo(int id, String title, String titleAlias, String author, String authorAlias, int year, String workType, String language, String image){
         this.id = id;
         this.title = title;
         this.titleAlias = titleAlias;
@@ -36,29 +22,6 @@ public class EntryInfo {
         this.workType = workType;
         this.language = language;
         this.image = image;
-    }
-
-    public EntryInfo(String title, String titleAlias, String author, String authorAlias, int year, String workType, String language, byte[] bimage){
-        this.title = title;
-        this.titleAlias = titleAlias;
-        this.author = author;
-        this.authorAlias = authorAlias;
-        this.year = year;
-        this.workType = workType;
-        this.language = language;
-        this.bimage = bimage;
-    }
-
-    public EntryInfo(int id, String title, String titleAlias, String author, String authorAlias, int year, String workType, String language, byte[] bimage){
-        this.id = id;
-        this.title = title;
-        this.titleAlias = titleAlias;
-        this.author = author;
-        this.authorAlias = authorAlias;
-        this.year = year;
-        this.workType = workType;
-        this.language = language;
-        this.bimage = bimage;
     }
 
     public void setId(int id){
@@ -125,19 +88,11 @@ public class EntryInfo {
         return language;
     }
 
-    public void setImage(ImageView image){
+    public void setImage(String image){
         this.image = image;
     }
 
-    public ImageView getImage(){
+    public String getImage(){
         return image;
-    }
-
-    public void setBimage(byte[] bimage){
-        this.bimage = bimage;
-    }
-
-    public byte[] getBimage(){
-        return bimage;
     }
 }

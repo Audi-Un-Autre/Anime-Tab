@@ -1,7 +1,13 @@
 package ui.controllers;
 
-import java.io.IOException;
+import database.*;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.io.File;
+
+import javafx.scene.image.Image;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -14,11 +20,16 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.Parent;
 import javafx.fxml.FXMLLoader;
 import javafx.event.ActionEvent;
+import javafx.scene.layout.GridPane;
+import javafx.scene.input.MouseEvent;
 
 public class SearchManageController {
 
     @FXML
     private BorderPane rootPane;
+
+    @FXML
+    private GridPane infoGrid;
 
     @FXML
     private Button backButton;
@@ -98,8 +109,57 @@ public class SearchManageController {
     }
 
     @FXML
-    void SearchButtonClicked(ActionEvent event) throws IOException{
+    void SearchButtonClicked(ActionEvent event) throws Exception{
+        String query = search.getText();
+        if (query.isBlank())
+            return;
+        else{
+            resultList.getItems().clear();
+            ArrayList<EntryInfo> queryResults = DataEntry.View(query);
+            if (queryResults.isEmpty()){
+            } else {
 
+                // create list of entry hyperlinks and display
+                for (EntryInfo ei : queryResults){
+                    Hyperlink resultLink = new Hyperlink(ei.getTitle() + "\n");
+                    resultLink.setOnAction(e -> {
+
+                        // onclick
+                        try{
+                            FXMLLoader loader = new FXMLLoader(getClass().getResource("../scenes/ViewEntryScene.fxml"));
+                            Parent root = loader.load();
+                            ViewEntryController veController = loader.getController();
+                            veController.CreateFormView(rootPane.getScene().getRoot(), ei);
+                            rootPane.getScene().setRoot(root);
+                        } catch (Exception ex){
+                            System.out.println(ex);
+                        }
+                    });
+
+                    // onhover
+                    resultLink.setOnMouseEntered(new EventHandler<MouseEvent>() {
+                        @Override
+                        public void handle(MouseEvent me){
+                            infoGrid.setVisible(true);
+                            id.setText(String.valueOf(ei.getId()));
+                            title.setText(ei.getTitle());
+                            titleAlias.setText(ei.getTitleAlias());
+                            author.setText(ei.getAuthor());
+                            authorAlias.setText(ei.getAuthorAlias());
+                            year.setText(String.valueOf(ei.getYear()));
+                            workType.setText(ei.getWorkType());
+                            language.setText(ei.getLanguage());
+
+                            File f = new File(System.getProperty("user.dir") + "/src/ui/design/related/covers/" + ei.getImage());
+
+                            Image image = new Image(f.toURI().toString());
+                            imageView.setImage(image);
+                        }
+                    });
+                    resultList.getItems().add(resultLink);
+                }
+            }
+        }
     }
 
     private void ChangeUI(String name) throws IOException{
