@@ -29,6 +29,7 @@ public class ViewEntryController {
     private Parent      root;
     private boolean     edited;
     private Image       imageTemp;
+    private final static String imgLoc = System.getProperty("user.dir") + "/src/ui/design/related/covers/";
 
     @FXML
     private BorderPane rootPane;
@@ -103,8 +104,12 @@ public class ViewEntryController {
     private TextField editTitle;
 
     @FXML
-    void BackButtonClicked(ActionEvent event) throws IOException{
+    void BackButtonClicked(ActionEvent event) throws Exception{
         if (!edited){
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../scenes/SearchManageScene.fxml"));
+            Parent root = loader.load();
+            SearchManageController smController = loader.getController();
+            smController.InitSearch();
             rootPane.getScene().setRoot(root);
         } else {
             root = null;
@@ -116,8 +121,7 @@ public class ViewEntryController {
     @FXML
     void BrowseButtonClicked(ActionEvent event) throws IOException{
         FileChooser f = new FileChooser();
-
-        // Browse and set image url
+        
         File file = f.showOpenDialog(browseButton.getScene().getWindow());
             if (file != null){
                 imageTemp = new Image(file.toURI().toString());
@@ -142,7 +146,7 @@ public class ViewEntryController {
         
             // need to make sure image filename doesn't already exist, if so, append (x)
         
-            Files.copy(Paths.get(imageAddress.getText()), Paths.get(System.getProperty("user.dir") + "/src/ui/design/related/covers/" + filename), StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(Paths.get(imageAddress.getText()), Paths.get(imgLoc + filename), StandardCopyOption.REPLACE_EXISTING);
             ei.setImage(filename);
         }
 
@@ -225,7 +229,7 @@ public class ViewEntryController {
             format.setText(ei.getWorkType());
             language.setText(ei.getLanguage());
 
-            File f = new File(System.getProperty("user.dir") + "/src/ui/design/related/covers/" + ei.getImage());
+            File f = new File(imgLoc + ei.getImage());
 
             Image image = new Image(f.toURI().toString());
             imageView.setImage(image);

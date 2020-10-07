@@ -24,6 +24,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.input.MouseEvent;
 
 public class SearchManageController {
+    private boolean init = true;
+
+    private final static String imgLoc = System.getProperty("user.dir") + "/src/ui/design/related/covers/";
 
     @FXML
     private BorderPane rootPane;
@@ -114,51 +117,46 @@ public class SearchManageController {
         if (query.isBlank())
             return;
         else{
-            resultList.getItems().clear();
             ArrayList<EntryInfo> queryResults = DataEntry.View(query);
-            if (queryResults.isEmpty()){
-            } else {
+            if (!queryResults.isEmpty()) DisplayLinks(queryResults);
+        }
+    }
 
-                // create list of entry hyperlinks and display
-                for (EntryInfo ei : queryResults){
-                    Hyperlink resultLink = new Hyperlink(ei.getTitle() + "\n");
-                    resultLink.setOnAction(e -> {
+    private void DisplayLinks(ArrayList<EntryInfo> queryResults){
+        resultList.getItems().clear();
 
-                        // onclick
-                        try{
-                            FXMLLoader loader = new FXMLLoader(getClass().getResource("../scenes/ViewEntryScene.fxml"));
-                            Parent root = loader.load();
-                            ViewEntryController veController = loader.getController();
-                            veController.CreateFormView(rootPane.getScene().getRoot(), ei);
-                            rootPane.getScene().setRoot(root);
-                        } catch (Exception ex){
-                            System.out.println(ex);
-                        }
-                    });
+        // create list of entry hyperlinks and display
+        for (EntryInfo ei : queryResults){
+            Hyperlink resultLink = new Hyperlink(ei.getTitle() + "\n");
+            resultList.getItems().add(resultLink);
 
-                    // onhover
-                    resultLink.setOnMouseEntered(new EventHandler<MouseEvent>() {
-                        @Override
-                        public void handle(MouseEvent me){
-                            infoGrid.setVisible(true);
-                            id.setText(String.valueOf(ei.getId()));
-                            title.setText(ei.getTitle());
-                            titleAlias.setText(ei.getTitleAlias());
-                            author.setText(ei.getAuthor());
-                            authorAlias.setText(ei.getAuthorAlias());
-                            year.setText(String.valueOf(ei.getYear()));
-                            workType.setText(ei.getWorkType());
-                            language.setText(ei.getLanguage());
+            resultLink.setOnAction(e -> {
 
-                            File f = new File(System.getProperty("user.dir") + "/src/ui/design/related/covers/" + ei.getImage());
-
-                            Image image = new Image(f.toURI().toString());
-                            imageView.setImage(image);
-                        }
-                    });
-                    resultList.getItems().add(resultLink);
+                // onclick view entry
+                try{
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("../scenes/ViewEntryScene.fxml"));
+                    Parent root = loader.load();
+                    ViewEntryController veController = loader.getController();
+                    veController.CreateFormView(rootPane.getScene().getRoot(), ei);
+                    rootPane.getScene().setRoot(root);
+                } catch (Exception ex){
+                    System.out.println(ex);
                 }
-            }
+            });
+
+            // onhover show a preview of the entry
+            resultLink.setOnMouseEntered(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent me){
+                    infoGrid.setVisible(true);
+                    id.setText(String.valueOf(ei.getId()));
+                    title.setText(ei.getTitle());
+
+                    File f = new File(imgLoc + ei.getImage());
+                    Image image = new Image(f.toURI().toString());
+                    imageView.setImage(image);
+                }
+            });
         }
     }
 
@@ -166,6 +164,12 @@ public class SearchManageController {
         Parent root = null;
         root = FXMLLoader.load(getClass().getResource("../scenes/"+name+".fxml"));
         rootPane.getScene().setRoot(root);
+    }
+
+    public void InitSearch() throws Exception{
+        // on scene load, add all existing entries in database to the list
+        DisplayLinks(DataEntry.ViewInit());
+        init = false;
     }
 
 }

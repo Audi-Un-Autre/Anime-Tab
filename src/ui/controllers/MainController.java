@@ -35,8 +35,14 @@ public class MainController {
     }
 
     @FXML
-    private void SearchManageButtonClicked(ActionEvent event) throws IOException{
-        ChangeUI("SearchManageScene");
+    private void SearchManageButtonClicked(ActionEvent event) throws Exception{
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../scenes/SearchManageScene.fxml"));
+        Parent root = loader.load();
+
+        SearchManageController smController = loader.getController();
+        smController.InitSearch();
+        
+        rootPane.getScene().setRoot(root);
     }
 
     @FXML
@@ -46,6 +52,7 @@ public class MainController {
 
     private void ChangeUI(String name) throws IOException{
         Parent root = null;
+
         root = FXMLLoader.load(getClass().getResource("../scenes/"+name+".fxml"));
         rootPane.getScene().setRoot(root);
     }
@@ -54,6 +61,7 @@ public class MainController {
         Parent root = null;
         root = FXMLLoader.load(getClass().getResource("../scenes/"+name+".fxml"));
         Scene scene = new Scene(root);
+
         Stage stage = new Stage(StageStyle.UTILITY);
         stage.setTitle("Settings");
         stage.getIcons().add(new Image(getClass().getResourceAsStream("../design/gon.png")));

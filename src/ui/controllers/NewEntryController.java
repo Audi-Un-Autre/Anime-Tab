@@ -27,6 +27,7 @@ import javafx.scene.image.Image;
 
 public class NewEntryController {
     private Image imageTemp;
+    private final static String imgLoc = System.getProperty("user.dir") + "/src/ui/design/related/covers/";
 
     @FXML
     private BorderPane rootPane;
@@ -115,10 +116,7 @@ public class NewEntryController {
         // copy file local to app directory, store files absolute location
         File f = new File(imageAddress.getText());
         String filename = f.getName();
-        
-        // need to make sure image filename doesn't already exist, if so, append (x)
-        
-        Files.copy(Paths.get(imageAddress.getText()), Paths.get(System.getProperty("user.dir") + "/src/ui/design/related/covers/" + filename), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(Paths.get(imageAddress.getText()), Paths.get(imgLoc + filename), StandardCopyOption.REPLACE_EXISTING);
         
         // Add new entry into database
         EntryInfo ei = new EntryInfo(DataEntry.CreateID(), title.getText(), titleAlias.getText(), author.getText(), authorAlias.getText(), years.getValue(), formats.getValue(), languages.getValue(), filename);
@@ -148,16 +146,18 @@ public class NewEntryController {
         metaAnchor.setVisible(true);
 
         // Set all meta into preview pane
-        titleLabel.setText(title.getText());
-        titleAliasLabel.setText(titleAlias.getText());
-        authorLabel.setText(author.getText());
-        authorAliasLabel.setText(authorAlias.getText());
-        yearLabel.setText(String.valueOf(years.getValue()));
-        workTypeLabel.setText(formats.getValue());
-        languageLabel.setText(languages.getValue());
+        {
+            titleLabel.setText(title.getText());
+            titleAliasLabel.setText(titleAlias.getText());
+            authorLabel.setText(author.getText());
+            authorAliasLabel.setText(authorAlias.getText());
+            yearLabel.setText(String.valueOf(years.getValue()));
+            workTypeLabel.setText(formats.getValue());
+            languageLabel.setText(languages.getValue());
 
-        imageView.setImage(imageTemp);
-        imageView.maxWidth(300);
+            imageView.setImage(imageTemp);
+            imageView.maxWidth(300);
+        }
     }
 
     private void ChangeUI(String name) throws IOException{
