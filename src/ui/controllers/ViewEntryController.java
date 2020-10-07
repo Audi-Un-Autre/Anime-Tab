@@ -135,11 +135,24 @@ public class ViewEntryController {
 
         // Entry update details
         {
+            // check choiceboxes
+            Integer yearCheck;
+            String formatCheck;
+            String languageCheck;
+            if (editYear.getValue() == null) yearCheck = null;
+            else yearCheck = editYear.getValue();
+
+            if (editFormat.getValue() == null) formatCheck = "";
+            else formatCheck = editFormat.getValue();
+
+            if (editLanguage.getValue() == null) languageCheck = "";
+            else languageCheck = editLanguage.getValue();
+
             ei.setTitle(editTitle.getText());
             ei.setAuthor(editAuthor.getText());
-            ei.setYear(editYear.getValue());
-            ei.setWorkType(editFormat.getValue());
-            ei.setLanguage(editLanguage.getValue());
+            ei.setYear(yearCheck);
+            ei.setWorkType(formatCheck);
+            ei.setLanguage(languageCheck);
 
             File f = new File(imageAddress.getText());
             String filename = f.getName();

@@ -20,14 +20,17 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.event.ActionEvent;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.fxml.FXMLLoader;
 import javafx.collections.FXCollections;
+import javafx.css.PseudoClass;
 import javafx.stage.FileChooser;
 import javafx.scene.image.Image;
 
 public class NewEntryController {
     private Image imageTemp;
     private final static String imgLoc = System.getProperty("user.dir") + "/src/ui/design/related/covers/";
+    private final PseudoClass errorField = PseudoClass.getPseudoClass("error");
 
     @FXML
     private BorderPane rootPane;
@@ -104,22 +107,53 @@ public class NewEntryController {
         }
         years.setItems(FXCollections.observableArrayList(year));
 
-        String workTypes[] = {"Anime", "Manga", "Manhwa", "Comic", "Other"};
+        String workTypes[] = {"", "Anime", "Manga", "Manhwa", "Comic", "Other"};
         formats.setItems(FXCollections.observableArrayList(workTypes));
 
-        String language[] = {"Japanese", "English", "French", "Spanish", "German", "Other"};
+        String language[] = {"", "Japanese", "English", "French", "Spanish", "German", "Other"};
         languages.setItems(FXCollections.observableArrayList(language));
     }
 
     @FXML
     void AddButtonClicked(ActionEvent event) throws Exception{
+        rootPane.getScene().getStylesheets().add(getClass().getResource("../design/AddStyle.css").toExternalForm());
+
         // copy file local to app directory, store files absolute location
-        File f = new File(imageAddress.getText());
-        String filename = f.getName();
-        Files.copy(Paths.get(imageAddress.getText()), Paths.get(imgLoc + filename), StandardCopyOption.REPLACE_EXISTING);
+        String filename = "";
+        if (!imageAddress.getText().isBlank()){
+            File f = new File(imageAddress.getText());
+            filename = f.getName();
+            Files.copy(Paths.get(imageAddress.getText()), Paths.get(imgLoc + filename), StandardCopyOption.REPLACE_EXISTING);
+        }
+
+        // check choiceboxes
+        Integer yearCheck;
+        String formatCheck;
+        String languageCheck;
+        if (years.getValue() == null) yearCheck = null;
+        else yearCheck = years.getValue();
+
+        if (formats.getValue() == null) formatCheck = "";
+        else formatCheck = formats.getValue();
+
+        if (languages.getValue() == null) languageCheck = "";
+        else languageCheck = languages.getValue();
+
+        // titles, authors, and aliases cannot be null at the same time i.e. title and title alias cannot be null together, either or must have an entry
+        if (title.getText().isBlank() && titleAlias.getText().isBlank()){
+            title.pseudoClassStateChanged(errorField, true);
+            titleAlias.pseudoClassStateChanged(errorField, true);
+            return;
+        }
+
+        if (author.getText().isBlank() && authorAlias.getText().isBlank()){
+            author.pseudoClassStateChanged(errorField, true);
+            authorAlias.pseudoClassStateChanged(errorField, true);
+            return;
+        }
         
         // Add new entry into database
-        EntryInfo ei = new EntryInfo(DataEntry.CreateID(), title.getText(), titleAlias.getText(), author.getText(), authorAlias.getText(), years.getValue(), formats.getValue(), languages.getValue(), filename);
+        EntryInfo ei = new EntryInfo(DataEntry.CreateID(), title.getText(), titleAlias.getText(), author.getText(), authorAlias.getText(), yearCheck, formatCheck, languageCheck, filename);
         DataEntry.Add(ei);
         System.out.println("Entry added.");
     }

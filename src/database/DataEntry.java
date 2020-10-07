@@ -7,6 +7,7 @@ import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Types;
 
 import org.yaml.snakeyaml.*;
 
@@ -90,8 +91,9 @@ public class DataEntry {
 
     public static void Add(EntryInfo entry) throws Exception{
         Connection connection = getConnection();
-
-        PreparedStatement enterData = connection.prepareStatement("INSERT INTO work VALUES('"+entry.getId()+"', '"+entry.getTitle()+"', '"+entry.getTitleAlias()+"', + '"+entry.getAuthor()+"', '"+entry.getAuthorAlias()+"', '"+entry.getYear()+"', '"+entry.getWorkType()+"', '"+entry.getLanguage()+"', '"+entry.getImage()+"')");
+        String query = "INSERT INTO work VALUES('"+entry.getId()+"', ?, ?, ?, ?, ?, ?, ?, ?)";
+        PreparedStatement enterData = connection.prepareStatement(query);
+        CheckData(entry, enterData);
         enterData.executeUpdate();
         System.out.println("NEW ENTRY SUCCESSFUL!");
         connection.close();
@@ -100,7 +102,9 @@ public class DataEntry {
 
     public static void ModifyEntry(EntryInfo ei) throws Exception{
         Connection connection = getConnection();
-        PreparedStatement statement = connection.prepareStatement("UPDATE work SET title = '"+ei.getTitle()+"', title_alias = '"+ei.getTitleAlias()+"', author = '"+ei.getAuthor()+"', author_alias = '"+ei.getAuthorAlias()+"', year = '"+ei.getYear()+"', work_type = '"+ei.getWorkType()+"', language = '"+ei.getLanguage()+"', image = '"+ei.getImage()+"' WHERE work_id = '"+ei.getId()+"'");
+        String query = "UPDATE work SET title = ?, title_alias = ?, author = ?, author_alias = ?, year = ?, work_type = ?, language = ?, image = ? WHERE work_id = '"+ei.getId()+"'";
+        PreparedStatement statement = connection.prepareStatement(query);
+        CheckData(ei, statement);
         statement.executeUpdate();
         System.out.println("Entry "+ei.getId()+" updated successfully.");
         connection.close();
@@ -133,6 +137,32 @@ public class DataEntry {
         statement.executeUpdate();
         System.out.println("Entry deleted.");
         connection.close();
+    }
+
+    public static void CheckData(EntryInfo ei, PreparedStatement ps) throws Exception{
+        if (ei.getTitle().isBlank()) ps.setNull(1, Types.VARCHAR);
+        else ps.setString(1, ei.getTitle());
+
+        if (ei.getTitleAlias().isBlank()) ps.setNull(2, Types.VARCHAR);
+        else ps.setString(2, ei.getTitleAlias());
+
+        if (ei.getAuthor().isBlank()) ps.setNull(3, Types.VARCHAR);
+        else ps.setString(3, ei.getAuthor());
+        
+        if (ei.getAuthorAlias().isBlank()) ps.setNull(4, Types.VARCHAR);
+        else ps.setString(4, ei.getAuthorAlias());
+
+        if ((Integer)ei.getYear() == null) ps.setNull(5, Types.INTEGER);
+        else ps.setInt(5, ei.getYear());
+
+        if (ei.getWorkType().isBlank()) ps.setNull(6, Types.VARCHAR);
+        else ps.setString(6, ei.getWorkType());
+
+        if (ei.getLanguage().isBlank()) ps.setNull(7, Types.VARCHAR);
+        else ps.setString(7, ei.getLanguage());
+
+        if (ei.getImage().isBlank()) ps.setNull(8, Types.VARCHAR);
+        else ps.setString(8, ei.getImage());
     }
 }
 

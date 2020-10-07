@@ -1,8 +1,8 @@
 package database;
 
 public class EntryInfo {
-    private int         id, 
-                        year;
+    private int         id;    
+    private Integer     year;
 
     private String      title, titleAlias, 
                         author, authorAlias, 
@@ -12,7 +12,7 @@ public class EntryInfo {
 
     public EntryInfo(){}
 
-    public EntryInfo(int id, String title, String titleAlias, String author, String authorAlias, int year, String workType, String language, String image){
+    public EntryInfo(int id, String title, String titleAlias, String author, String authorAlias, Integer year, String workType, String language, String image){
         this.id = id;
         this.title = title;
         this.titleAlias = titleAlias;
@@ -68,7 +68,7 @@ public class EntryInfo {
         this.year = year;
     }
 
-    public int getYear(){
+    public Integer getYear(){
         return year;
     }
 

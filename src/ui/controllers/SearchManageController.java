@@ -59,63 +59,26 @@ public class SearchManageController {
     private ImageView imageView;
 
     @FXML
-    private Label idLabel;
-
-    @FXML
-    private Label titleLabel;
-
-    @FXML
-    private Label titleAliasLabel;
-
-    @FXML
-    private Label authorLabel;
-
-    @FXML
-    private Label authorAliasLabel;
-
-    @FXML
-    private Label yearLabel;
-
-    @FXML
-    private Label formatLabel;
-
-    @FXML
-    private Label languageLabel;
-
-    @FXML
     private Label id;
 
     @FXML
     private Label title;
 
     @FXML
-    private Label titleAlias;
-
-    @FXML
-    private Label author;
-
-    @FXML
-    private Label authorAlias;
-
-    @FXML
-    private Label year;
-
-    @FXML
-    private Label workType;
-
-    @FXML
-    private Label language;
+    private Label resultCount;
 
     @FXML
     void BackButtonClicked(ActionEvent event) throws IOException{
-        ChangeUI("MainScene");
+        Parent root = null;
+        root = FXMLLoader.load(getClass().getResource("../scenes/MainScene.fxml"));
+        rootPane.getScene().setRoot(root);
     }
 
     @FXML
     void SearchButtonClicked(ActionEvent event) throws Exception{
         String query = search.getText();
         if (query.isBlank())
-            return;
+            DisplayLinks(DataEntry.ViewInit());
         else{
             ArrayList<EntryInfo> queryResults = DataEntry.View(query);
             if (!queryResults.isEmpty()) DisplayLinks(queryResults);
@@ -129,9 +92,9 @@ public class SearchManageController {
         for (EntryInfo ei : queryResults){
             Hyperlink resultLink = new Hyperlink(ei.getTitle() + "\n");
             resultList.getItems().add(resultLink);
+            resultCount.setText(String.valueOf(queryResults.size()));
 
             resultLink.setOnAction(e -> {
-
                 // onclick view entry
                 try{
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("../scenes/ViewEntryScene.fxml"));
@@ -158,12 +121,6 @@ public class SearchManageController {
                 }
             });
         }
-    }
-
-    private void ChangeUI(String name) throws IOException{
-        Parent root = null;
-        root = FXMLLoader.load(getClass().getResource("../scenes/"+name+".fxml"));
-        rootPane.getScene().setRoot(root);
     }
 
     public void InitSearch() throws Exception{
