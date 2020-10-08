@@ -7,6 +7,7 @@
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
@@ -43,14 +44,17 @@
               </rowConstraints>
                <children>
                   <Button fx:id="searchButton" mnemonicParsing="false" onAction="#SearchButtonClicked" text="search" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                  <ChoiceBox fx:id="years" disable="true" prefWidth="150.0" GridPane.columnIndex="2" />
-                  <ChoiceBox fx:id="workTypes" disable="true" prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                  <ChoiceBox fx:id="languages" disable="true" prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                  <RadioButton mnemonicParsing="false" text="title" />
-                  <RadioButton mnemonicParsing="false" text="author" GridPane.rowIndex="1" />
-                  <RadioButton mnemonicParsing="false" text="year" GridPane.columnIndex="1" />
-                  <RadioButton mnemonicParsing="false" text="format" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <RadioButton mnemonicParsing="false" text="language" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <ChoiceBox fx:id="years" prefWidth="150.0" visible="false" GridPane.columnIndex="2" />
+                  <ChoiceBox fx:id="workTypes" prefWidth="150.0" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                  <ChoiceBox fx:id="languages" prefWidth="150.0" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                  <RadioButton fx:id="titleRadio" mnemonicParsing="false" onAction="#titleRadioSelected" text="title">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="filterGroup" />
+                     </toggleGroup></RadioButton>
+                  <RadioButton fx:id="authorRadio" mnemonicParsing="false" onAction="#authorRadioSelected" text="author" toggleGroup="$filterGroup" GridPane.rowIndex="1" />
+                  <RadioButton fx:id="yearRadio" mnemonicParsing="false" onAction="#yearRadioSelected" text="year" toggleGroup="$filterGroup" GridPane.columnIndex="1" />
+                  <RadioButton fx:id="formatRadio" mnemonicParsing="false" onAction="#formatRadioSelected" text="format" toggleGroup="$filterGroup" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <RadioButton fx:id="languageRadio" mnemonicParsing="false" onAction="#languageRadioSelected" text="language" toggleGroup="$filterGroup" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                </children>
             </GridPane>
             <Label fx:id="resultLabel" layoutX="422.0" layoutY="417.0" text="Result(s):" />

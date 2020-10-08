@@ -53,11 +53,29 @@ public class DataEntry {
         return null;
     }
 
-    public static ArrayList<EntryInfo> View(String query) throws Exception{
+    public static ArrayList<EntryInfo> View(Object query) throws Exception{
         ArrayList<EntryInfo> entries = new ArrayList<EntryInfo>();
 
         Connection connection = getConnection();
         PreparedStatement statement = connection.prepareStatement("SELECT * FROM work WHERE '"+query+"' IN (title, title_alias, author, author_alias, year, work_type, language)");
+        ResultSet rs = statement.executeQuery();
+
+        while(rs.next()){
+            EntryInfo newFind = new EntryInfo(rs.getInt("work_id"), rs.getString("title"), rs.getString("title_alias"), rs.getString("author"), rs.getString("author_alias"), rs.getInt("year"), rs.getString("work_type"), rs.getString("language"), rs.getString("image"));
+            entries.add(newFind);
+        }
+            
+        connection.close();
+        System.out.println("Connection closed.");
+
+        return entries;
+    }
+
+    public static ArrayList<EntryInfo> View(Object query, String column) throws Exception{
+        ArrayList<EntryInfo> entries = new ArrayList<EntryInfo>();
+
+        Connection connection = getConnection();
+        PreparedStatement statement = connection.prepareStatement("SELECT * FROM work WHERE '"+query+"' IN ("+column+")");
         ResultSet rs = statement.executeQuery();
 
         while(rs.next()){
