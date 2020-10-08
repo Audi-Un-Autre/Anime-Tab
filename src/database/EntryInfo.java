@@ -64,7 +64,7 @@ public class EntryInfo {
         return authorAlias;
     }
 
-    public void setYear(int year){
+    public void setYear(Integer year){
         this.year = year;
     }
 

@@ -140,28 +140,28 @@ public class DataEntry {
     }
 
     public static void CheckData(EntryInfo ei, PreparedStatement ps) throws Exception{
-        if (ei.getTitle().isBlank()) ps.setNull(1, Types.VARCHAR);
+        if (ei.getTitle() == null || ei.getTitle().isBlank()) ps.setNull(1, Types.VARCHAR);
         else ps.setString(1, ei.getTitle());
 
-        if (ei.getTitleAlias().isBlank()) ps.setNull(2, Types.VARCHAR);
+        if (ei.getTitleAlias() == null || ei.getTitleAlias().isBlank()) ps.setNull(2, Types.VARCHAR);
         else ps.setString(2, ei.getTitleAlias());
 
-        if (ei.getAuthor().isBlank()) ps.setNull(3, Types.VARCHAR);
+        if (ei.getAuthor() == null || ei.getAuthor().isBlank()) ps.setNull(3, Types.VARCHAR);
         else ps.setString(3, ei.getAuthor());
         
-        if (ei.getAuthorAlias().isBlank()) ps.setNull(4, Types.VARCHAR);
+        if (ei.getAuthorAlias() == null || ei.getAuthorAlias().isBlank()) ps.setNull(4, Types.VARCHAR);
         else ps.setString(4, ei.getAuthorAlias());
 
         if ((Integer)ei.getYear() == null) ps.setNull(5, Types.INTEGER);
         else ps.setInt(5, ei.getYear());
 
-        if (ei.getWorkType().isBlank()) ps.setNull(6, Types.VARCHAR);
+        if (ei.getWorkType() == null || ei.getWorkType().isBlank()) ps.setNull(6, Types.VARCHAR);
         else ps.setString(6, ei.getWorkType());
 
-        if (ei.getLanguage().isBlank()) ps.setNull(7, Types.VARCHAR);
+        if (ei.getLanguage() == null || ei.getLanguage().isBlank()) ps.setNull(7, Types.VARCHAR);
         else ps.setString(7, ei.getLanguage());
 
-        if (ei.getImage().isBlank()) ps.setNull(8, Types.VARCHAR);
+        if (ei.getImage() == null || ei.getImage().isBlank()) ps.setNull(8, Types.VARCHAR);
         else ps.setString(8, ei.getImage());
     }
 }

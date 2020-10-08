@@ -7,6 +7,8 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Vector;
+import java.util.Calendar;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -22,6 +24,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
+import javafx.collections.FXCollections;
 
 public class ViewEntryController {
 
@@ -103,6 +106,23 @@ public class ViewEntryController {
     @FXML
     private TextField editTitle;
 
+    public void initialize(){
+        //populate choiceboxes
+        Vector<Integer> year = new Vector<Integer>();
+        Calendar c = Calendar.getInstance();
+        for (int i = c.get(Calendar.YEAR); i >= 1900; i--){
+            if (i == c.get(Calendar.YEAR)) year.add(null);
+            year.add(i);
+        }
+        editYear.setItems(FXCollections.observableArrayList(year));
+
+        String workTypes[] = {"", "Anime", "Manga", "Manhwa", "Comic", "Other"};
+        editFormat.setItems(FXCollections.observableArrayList(workTypes));
+
+        String language[] = {"", "Japanese", "English", "French", "Spanish", "German", "Other"};
+        editLanguage.setItems(FXCollections.observableArrayList(language));
+    }
+
     @FXML
     void BackButtonClicked(ActionEvent event) throws Exception{
         if (!edited){
@@ -154,13 +174,15 @@ public class ViewEntryController {
             ei.setWorkType(formatCheck);
             ei.setLanguage(languageCheck);
 
-            File f = new File(imageAddress.getText());
-            String filename = f.getName();
-        
-            // need to make sure image filename doesn't already exist, if so, append (x)
-        
-            Files.copy(Paths.get(imageAddress.getText()), Paths.get(imgLoc + filename), StandardCopyOption.REPLACE_EXISTING);
-            ei.setImage(filename);
+            if (!imageAddress.getText().isBlank()){
+                File f = new File(imageAddress.getText());
+                String filename = f.getName();
+            
+                // need to make sure image filename doesn't already exist, if so, append (x)
+            
+                Files.copy(Paths.get(imageAddress.getText()), Paths.get(imgLoc + filename), StandardCopyOption.REPLACE_EXISTING);
+                ei.setImage(filename);
+            }
         }
 
         DataEntry.ModifyEntry(ei);
@@ -242,11 +264,12 @@ public class ViewEntryController {
             format.setText(ei.getWorkType());
             language.setText(ei.getLanguage());
 
-            File f = new File(imgLoc + ei.getImage());
+            if (ei.getImage() != null){
+                File f = new File(imgLoc + ei.getImage());
 
-            Image image = new Image(f.toURI().toString());
-            imageView.setImage(image);
-            System.out.println(f.toURI().toString());
+                Image image = new Image(f.toURI().toString());
+                imageView.setImage(image);
+            }
         }
     }
 }
