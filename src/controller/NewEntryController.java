@@ -10,6 +10,8 @@ import java.util.Calendar;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+import org.apache.commons.io.FilenameUtils;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -106,7 +108,7 @@ public class NewEntryController {
         }
         years.setItems(FXCollections.observableArrayList(year));
 
-        String workTypes[] = {"", "Anime", "Manga", "Manhwa", "Comic", "Other"};
+        String workTypes[] = {"Anime", "Manga", "Manhwa", "Comic", "Other"};
         formats.setItems(FXCollections.observableArrayList(workTypes));
 
         String language[] = {"", "Japanese", "English", "French", "Spanish", "German", "Other"};
@@ -122,6 +124,15 @@ public class NewEntryController {
         if (!imageAddress.getText().isBlank()){
             File f = new File(imageAddress.getText());
             filename = f.getName();
+
+            if (new File(imgLoc + filename).exists()){
+                String fileTemp = filename;
+                for (int i = 1; new File(imgLoc + fileTemp).exists(); i++){
+                    fileTemp = FilenameUtils.getBaseName(filename) + "("+i+")." + FilenameUtils.getExtension(filename);
+                }
+                filename = fileTemp;
+            }
+
             Files.copy(Paths.get(imageAddress.getText()), Paths.get(imgLoc + filename), StandardCopyOption.REPLACE_EXISTING);
         }
 
@@ -165,6 +176,8 @@ public class NewEntryController {
     @FXML
     void BrowseButtonClicked(ActionEvent event) {
         FileChooser f = new FileChooser();
+        FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("Images", "*.jpg", "*.png", "*.jpeg");
+        f.getExtensionFilters().add(filter);
 
         // Browse and set image url
         File file = f.showOpenDialog(browseButton.getScene().getWindow());

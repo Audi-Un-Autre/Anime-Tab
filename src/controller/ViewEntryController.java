@@ -10,6 +10,8 @@ import java.nio.file.StandardCopyOption;
 import java.util.Vector;
 import java.util.Calendar;
 
+import org.apache.commons.io.FilenameUtils;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -115,7 +117,7 @@ public class ViewEntryController {
         }
         editYear.setItems(FXCollections.observableArrayList(year));
 
-        String workTypes[] = {"", "Anime", "Manga", "Manhwa", "Comic", "Other"};
+        String workTypes[] = {"Anime", "Manga", "Manhwa", "Comic", "Other"};
         editFormat.setItems(FXCollections.observableArrayList(workTypes));
 
         String language[] = {"", "Japanese", "English", "French", "Spanish", "German", "Other"};
@@ -140,6 +142,8 @@ public class ViewEntryController {
     @FXML
     void BrowseButtonClicked(ActionEvent event) throws IOException{
         FileChooser f = new FileChooser();
+        FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("Images", "*.jpg", "*.png", "*.jpeg");
+        f.getExtensionFilters().add(filter);
         
         File file = f.showOpenDialog(browseButton.getScene().getWindow());
             if (file != null) imageAddress.setText(file.getAbsolutePath());
@@ -173,9 +177,15 @@ public class ViewEntryController {
             if (!imageAddress.getText().isBlank()){
                 File f = new File(imageAddress.getText());
                 String filename = f.getName();
-            
-                // need to make sure image filename doesn't already exist, if so, append (x)
-            
+
+                if (new File(imgLoc + filename).exists()){
+                    String fileTemp = filename;
+                    for (int i = 1; new File(imgLoc + fileTemp).exists(); i++){
+                        fileTemp = FilenameUtils.getBaseName(filename) + "("+i+")." + FilenameUtils.getExtension(filename);
+                    }
+                    filename = fileTemp;
+                }
+                        
                 Files.copy(Paths.get(imageAddress.getText()), Paths.get(imgLoc + filename), StandardCopyOption.REPLACE_EXISTING);
                 ei.setImage(filename);
             }

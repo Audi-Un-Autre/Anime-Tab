@@ -57,7 +57,7 @@
                   <ChoiceBox fx:id="years" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                   <ChoiceBox fx:id="formats" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                   <ChoiceBox fx:id="languages" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                  <TextField fx:id="imageAddress" alignment="CENTER" disable="true" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                  <TextField fx:id="imageAddress" alignment="BASELINE_LEFT" disable="true" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="7" />
                </children>
             </GridPane>
             <Button fx:id="previewButton" mnemonicParsing="false" onAction="#PreviewButtonClicked" text="Preview" translateY="45.0" />

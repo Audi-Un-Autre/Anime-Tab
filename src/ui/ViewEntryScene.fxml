@@ -80,7 +80,7 @@
                         <Label fx:id="languageLabel" text="Language" GridPane.rowIndex="4" />
                         <Label fx:id="imageLabel" text="Image" GridPane.rowIndex="5" />
                         <Button fx:id="browseButton" alignment="CENTER" mnemonicParsing="false" onAction="#BrowseButtonClicked" text=". . ." GridPane.columnIndex="2" GridPane.rowIndex="5" />
-                        <TextField fx:id="imageAddress" prefHeight="25.0" prefWidth="203.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                        <TextField fx:id="imageAddress" disable="true" prefHeight="25.0" prefWidth="203.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                         <TextField fx:id="editAuthor" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <ChoiceBox fx:id="editLanguage" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                         <ChoiceBox fx:id="editYear" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
