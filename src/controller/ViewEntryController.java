@@ -1,4 +1,4 @@
-package ui.controllers;
+package controller;
 
 import database.*;
 
@@ -126,14 +126,14 @@ public class ViewEntryController {
     @FXML
     void BackButtonClicked(ActionEvent event) throws Exception{
         if (!edited){
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../scenes/SearchManageScene.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../ui/SearchManageScene.fxml"));
             Parent root = loader.load();
             SearchManageController smController = loader.getController();
             smController.InitSearch();
             rootPane.getScene().setRoot(root);
         } else {
             root = null;
-            root = FXMLLoader.load(getClass().getResource("../scenes/SearchManageScene.fxml"));
+            root = FXMLLoader.load(getClass().getResource("../ui/SearchManageScene.fxml"));
             rootPane.getScene().setRoot(root);
         }
     }

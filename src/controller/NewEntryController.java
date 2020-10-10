@@ -1,4 +1,4 @@
-package ui.controllers;
+package controller;
 
 import database.*;
 
@@ -116,7 +116,7 @@ public class NewEntryController {
 
     @FXML
     void AddButtonClicked(ActionEvent event) throws Exception{
-        rootPane.getScene().getStylesheets().add(getClass().getResource("../design/AddStyle.css").toExternalForm());
+        rootPane.getScene().getStylesheets().add(getClass().getResource("../ui/design/AddStyle.css").toExternalForm());
 
         // copy file local to app directory, store files absolute location
         String filename = "";
@@ -196,7 +196,7 @@ public class NewEntryController {
 
     private void ChangeUI(String name) throws IOException{
         Parent root = null;
-        root = FXMLLoader.load(getClass().getResource("../scenes/"+name+".fxml"));
+        root = FXMLLoader.load(getClass().getResource("../ui/"+name+".fxml"));
         rootPane.getScene().setRoot(root);
     }
 

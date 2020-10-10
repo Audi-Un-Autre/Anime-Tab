@@ -1,4 +1,4 @@
-package ui.controllers;
+package controller;
 
 import database.*;
 
@@ -97,7 +97,7 @@ public class SearchManageController {
     @FXML
     void BackButtonClicked(ActionEvent event) throws IOException{
         Parent root = null;
-        root = FXMLLoader.load(getClass().getResource("../scenes/MainScene.fxml"));
+        root = FXMLLoader.load(getClass().getResource("../ui/MainScene.fxml"));
         rootPane.getScene().setRoot(root);
     }
 
@@ -147,7 +147,7 @@ public class SearchManageController {
             resultLink.setOnAction(e -> {
                 // onclick view entry
                 try{
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("../scenes/ViewEntryScene.fxml"));
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("../ui/ViewEntryScene.fxml"));
                     Parent root = loader.load();
                     ViewEntryController veController = loader.getController();
                     veController.CreateFormView(rootPane.getScene().getRoot(), ei);

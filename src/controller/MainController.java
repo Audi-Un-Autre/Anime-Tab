@@ -1,9 +1,8 @@
-package ui.controllers;
+package controller;
 
 import java.io.IOException;
 
 import javafx.event.ActionEvent;
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -36,7 +35,7 @@ public class MainController {
 
     @FXML
     private void SearchManageButtonClicked(ActionEvent event) throws Exception{
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../scenes/SearchManageScene.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../ui/SearchManageScene.fxml"));
         Parent root = loader.load();
 
         SearchManageController smController = loader.getController();
@@ -53,18 +52,18 @@ public class MainController {
     private void ChangeUI(String name) throws IOException{
         Parent root = null;
 
-        root = FXMLLoader.load(getClass().getResource("../scenes/"+name+".fxml"));
+        root = FXMLLoader.load(getClass().getResource("../ui/"+name+".fxml"));
         rootPane.getScene().setRoot(root);
     }
 
     private void SettingsUI(String name) throws IOException{
         Parent root = null;
-        root = FXMLLoader.load(getClass().getResource("../scenes/"+name+".fxml"));
+        root = FXMLLoader.load(getClass().getResource("../ui/"+name+".fxml"));
         Scene scene = new Scene(root);
 
         Stage stage = new Stage(StageStyle.UTILITY);
         stage.setTitle("Settings");
-        stage.getIcons().add(new Image(getClass().getResourceAsStream("../design/gon.png")));
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("../ui/design/gon.png")));
         stage.setScene(scene);
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.show();

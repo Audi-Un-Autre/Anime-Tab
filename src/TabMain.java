@@ -1,5 +1,3 @@
-package ui;
-
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -15,8 +13,8 @@ public class TabMain extends Application{
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("scenes/MainScene.fxml"));
-        primaryStage.getIcons().add(new Image(TabMain.class.getResourceAsStream("design/gon.png")));
+        Parent root = FXMLLoader.load(getClass().getResource("ui/MainScene.fxml"));
+        primaryStage.getIcons().add(new Image(TabMain.class.getResourceAsStream("ui/design/gon.png")));
         primaryStage.setTitle("Anime Tab!");
         primaryStage.setResizable(false);
         primaryStage.setScene(new Scene(root, 1000, 600));
