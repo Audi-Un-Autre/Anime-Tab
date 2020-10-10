@@ -29,7 +29,7 @@ import javafx.scene.control.RadioButton;
 import javafx.collections.FXCollections;
 
 public class SearchManageController {
-    private boolean init = true, radioSelected = false;
+    private boolean radioSelected = false;
 
     private final static String imgLoc = System.getProperty("user.dir") + "/src/ui/design/related/covers/";
 
@@ -244,7 +244,6 @@ public class SearchManageController {
     public void InitSearch() throws Exception{
         // on scene load, add all existing entries in database to the list
         DisplayLinks(DataEntry.ViewInit());
-        init = false;
 
         //populate choiceboxes
         Vector<Integer> year = new Vector<Integer>();

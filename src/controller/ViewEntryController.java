@@ -31,7 +31,6 @@ public class ViewEntryController {
     private EntryInfo   ei;
     private Parent      root;
     private boolean     edited;
-    private Image       imageTemp;
     private final static String imgLoc = System.getProperty("user.dir") + "/src/ui/design/related/covers/";
 
     @FXML
@@ -143,10 +142,7 @@ public class ViewEntryController {
         FileChooser f = new FileChooser();
         
         File file = f.showOpenDialog(browseButton.getScene().getWindow());
-            if (file != null){
-                imageTemp = new Image(file.toURI().toString());
-                imageAddress.setText(file.getAbsolutePath());
-            }
+            if (file != null) imageAddress.setText(file.getAbsolutePath());
     }
 
     @FXML
