@@ -2,11 +2,12 @@ package controller;
 
 import java.io.IOException;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
@@ -17,7 +18,7 @@ import javafx.stage.StageStyle;
 public class MainController {
     
     @FXML
-    private BorderPane rootPane;
+    private AnchorPane rootPane;
 
     @FXML
     private Button settingsButton;
@@ -27,6 +28,9 @@ public class MainController {
 
     @FXML
     private Button searchManageButton;
+
+    @FXML
+    private Button exitButton;
 
     @FXML
     private void NewEntryButtonClicked(ActionEvent event) throws IOException{
@@ -54,6 +58,11 @@ public class MainController {
 
         root = FXMLLoader.load(getClass().getResource("../ui/"+name+".fxml"));
         rootPane.getScene().setRoot(root);
+    }
+
+    @FXML
+    private void exitButtonClicked(ActionEvent event){
+        Platform.exit();
     }
 
     private void SettingsUI(String name) throws IOException{

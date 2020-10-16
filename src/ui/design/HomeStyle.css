@@ -1,20 +1,75 @@
-.root{
-    -fx-background-image: url("hxh.jpg");
-    -fx-background-position: center fit;
-    -fx-background-size: cover;
+@font-face{
+    font-family: 'Earth Orbiter Bold';
+    src: url("related/fonts/earthorbiterbold.ttf");
+}
+
+#rootPane{
+    -fx-background-image: url("mido.jpg");
+
+    -fx-background-position: center center;
+    -fx-background-size: stretch;
+}
+
+#mainTitle{
+    -fx-font-family: 'Earth Orbiter Bold';
+    -fx-font-size: 100px;
+    -fx-text-fill: rgb(0, 0, 0);
+
+    -fx-stroke:rgb(0, 174, 255);
+    -fx-stroke-width:5px;
+    -fx-effect: dropshadow(gaussian, rgb(0, 174, 255), 10, 0.5, 0.0, 0.0);
 }
 
 .button{
-    -fx-background-color: rgba(0,0,0,0.5),
-                            linear-gradient(#9a9a9a, #909090),
-                            linear-gradient(white 0%, #f3f3f3 50%, #ececec 51%, #f2f2f2 100%);
-    -fx-background-insets: 0 0 -1 0, 0, 1;
-    -fx-background-radius: 5, 5, 4;
-    -fx-padding: 3 30 3 30;
-    -fx-text-fill: #242d35;
-    -fx-font-size:14px;
+    -fx-text-fill: rgb(0, 0, 0);
+    -fx-background: none;
+}
+
+#newEntryButton{
+    -fx-background-image: url("add.png");
+    -fx-background-size: 75px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+
+    -fx-stroke:rgba(148, 148, 148, 0.9);
+    -fx-stroke-width:2px;
+    -fx-effect: dropshadow(gaussian, rgba(148, 148, 148, 0.9), 10, 0.7, 0.0, 0.0);
+}
+
+#newEntryButton:hover, #searchManageButton:hover{
+    -fx-stroke:rgb(0, 174, 255);
+    -fx-stroke-width:1px;
+    -fx-effect: dropshadow(gaussian, rgb(0, 174, 255), 10, 0.5, 0.0, 0.0);
+}
+
+#searchManageButton{
+    -fx-background-image: url("eye.png");
+    -fx-background-size: 75px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+
+    -fx-stroke:rgba(148, 148, 148, 0.9);
+    -fx-stroke-width:2px;
+    -fx-effect: dropshadow(gaussian, rgba(148, 148, 148, 0.9), 10, 0.7, 0.0, 0.0);
+}
+
+#exitButton{
+    -fx-background-image: url("pwrbutton.png");
+    -fx-background-size: 40px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+
+    -fx-stroke:rgb(188, 18, 0);
+    -fx-stroke-width:1px;
+    -fx-effect: dropshadow(gaussian, rgb(188, 18, 0), 10, 0.5, 0.0, 0.0);
+}
+
+#exitButton:hover{
+    -fx-stroke:rgba(148, 148, 148, 0.9);
+    -fx-stroke-width:1px;
+    -fx-effect: dropshadow(gaussian, rgba(148, 148, 148, 0.9), 10, 0.5, 0.0, 0.0);
 }
 
 .button:pressed{
-    -fx-background-color: rgb(168, 168, 168);
+    -fx-background: none;
 }

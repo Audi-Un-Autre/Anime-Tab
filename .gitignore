@@ -90,3 +90,7 @@ nb-configuration.xml
 *.png
 *.jpg
 *.gif
+covers/
+
+#fonts
+fonts/
