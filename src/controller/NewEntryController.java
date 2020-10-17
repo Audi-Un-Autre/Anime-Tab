@@ -19,7 +19,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
 import javafx.event.ActionEvent;
 import javafx.scene.Parent;
 import javafx.fxml.FXMLLoader;
@@ -34,10 +33,7 @@ public class NewEntryController {
     private final PseudoClass errorField = PseudoClass.getPseudoClass("error");
 
     @FXML
-    private BorderPane rootPane;
-
-    @FXML
-    private AnchorPane metaAnchor;
+    private AnchorPane rootPane;
 
     @FXML
     private Button addButton;
@@ -58,7 +54,7 @@ public class NewEntryController {
     private Button browseButton;
 
     @FXML
-    private Button previewButton;
+    private Button clearButton;
 
     @FXML
     private TextField authorAlias;
@@ -82,22 +78,7 @@ public class NewEntryController {
     private Label titleLabel;
 
     @FXML
-    private Label titleAliasLabel;
-
-    @FXML
     private Label authorLabel;
-
-    @FXML
-    private Label authorAliasLabel;
-
-    @FXML
-    private Label yearLabel;
-
-    @FXML
-    private Label workTypeLabel;
-
-    @FXML
-    private Label languageLabel;
 
     public void initialize(){
         //populate choiceboxes
@@ -113,6 +94,15 @@ public class NewEntryController {
 
         String language[] = {"", "Japanese", "English", "French", "Spanish", "German", "Other"};
         languages.setItems(FXCollections.observableArrayList(language));
+
+        // textfield listeners
+        title.textProperty().addListener((observable, oldValue, newValue)-> {
+            titleLabel.setText(newValue);
+        });
+
+        author.textProperty().addListener((observable, oldValue, newValue)-> {
+            authorLabel.setText(newValue);
+        });
     }
 
     @FXML
@@ -184,26 +174,16 @@ public class NewEntryController {
             if (file != null){
                 imageTemp = new Image(file.toURI().toString());
                 imageAddress.setText(file.getAbsolutePath());
+                imageView.setImage(imageTemp);
+                clearButton.setVisible(true);
             }
     }
 
     @FXML
-    void PreviewButtonClicked(ActionEvent event){
-        metaAnchor.setVisible(true);
-
-        // Set all meta into preview pane
-        {
-            titleLabel.setText(title.getText());
-            titleAliasLabel.setText(titleAlias.getText());
-            authorLabel.setText(author.getText());
-            authorAliasLabel.setText(authorAlias.getText());
-            yearLabel.setText(String.valueOf(years.getValue()));
-            workTypeLabel.setText(formats.getValue());
-            languageLabel.setText(languages.getValue());
-
-            imageView.setImage(imageTemp);
-            imageView.maxWidth(300);
-        }
+    void ClearButtonClicked(ActionEvent event){
+        imageAddress.setText("");
+        imageView.setImage(null);
+        clearButton.setVisible(false);
     }
 
     private void ChangeUI(String name) throws IOException{

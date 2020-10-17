@@ -1,4 +1,80 @@
-.text-field:error{
-    -fx-text-box-border: red;
-    -fx-focus-color:red;
+@font-face{
+    font-family: "Montserrat Medium";
+    src: url("related/fonts/Montserrat-Medium.ttf");
+}
+
+@font-face{
+    font-family: "Montserrat Regular";
+    src: url("related/fonts/Montserrat-Regular.ttf");
+}
+
+#rootPane{
+    -fx-background-color: linear-gradient(rgb(255, 208, 79), rgb(255, 158, 47));
+}
+
+#inputFields{
+    -fx-background-color: rgb(255, 255, 255);
+    -fx-background-radius: 40 40 0 0;
+}
+
+#titleLabel{
+    -fx-font-size: 30px;
+}
+
+#authorLabel{
+    -fx-font-size: 15px;
+}
+
+#windowLabel{
+    -fx-font-size: 20px;
+}
+
+#titleLabel, #authorLabel, #windowLabel{
+    -fx-font-family: "Montserrat Medium";
+    -fx-stroke:rgba(255, 255, 255, 0.9);
+    -fx-stroke-width:.5px;
+    -fx-effect: dropshadow(gaussian, rgba(255, 255, 255, 0.9), 5, 0.2, 0.0, 0.0);
+}
+
+.button{
+    -fx-background:none;
+}
+
+#browseButton, #clearButton{
+    -fx-text-fill: rgb(0, 0, 0);
+    -fx-font-family: "Montserrat Regular";
+    -fx-background: none;
+    
+}
+
+#addButton{
+    -fx-font-family: "Montserrat Medium";
+    -fx-font-size: 20px;
+}
+
+#browseButton, #clearButton{
+    -fx-font-size: 15px;
+}
+
+#backButton{
+    -fx-background-image: url("backArrow.png");
+    -fx-background-size: 40px;
+    -fx-background-repeat: no-repeat;
+
+    -fx-stroke:rgba(255, 255, 255, 0.9);
+    -fx-stroke-width:2px;
+    -fx-effect: dropshadow(gaussian, rgba(255, 255, 255, 0.9), 5, 0.5, 0.0, 0.0);
+}
+
+.text-field{
+    -fx-prompt-text-font-family: "Montserrat Regular";
+    -fx-font-family: "Montserrat Regular";
+}
+
+#title, #author, #imageAddress{
+    -fx-font-size: 20px;
+}
+
+#authorAlias, #titleAlias{
+    -fx-font-size: 15px;
 }
