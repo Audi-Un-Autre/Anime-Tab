@@ -21,7 +21,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.Parent;
 import javafx.fxml.FXMLLoader;
 import javafx.event.ActionEvent;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.scene.image.Image;
@@ -36,7 +35,7 @@ public class ViewEntryController {
     private final static String imgLoc = System.getProperty("user.dir") + "/src/ui/design/related/covers/";
 
     @FXML
-    private BorderPane rootPane;
+    private AnchorPane rootPane;
 
     @FXML
     private GridPane editGrid, viewGrid;
@@ -76,9 +75,6 @@ public class ViewEntryController {
 
     @FXML
     private TextField imageAddress;
-
-    @FXML
-    private Label title;
 
     @FXML
     private Label author;
@@ -197,7 +193,6 @@ public class ViewEntryController {
         {
             idView.setText(String.valueOf(ei.getId()));
             titleView.setText(ei.getTitle());
-            title.setText(ei.getTitle());
             author.setText(ei.getAuthor());
             year.setText(String.valueOf(ei.getYear()));
             format.setText(ei.getWorkType());
@@ -208,6 +203,8 @@ public class ViewEntryController {
         {
             cancelButton.setVisible(false);
             finalizeEditButton.setVisible(false);
+            editEntryButton.setVisible(true);
+            deleteButton.setVisible(true);
             viewGrid.setVisible(true);
             editGrid.setVisible(false);
         }
@@ -218,6 +215,8 @@ public class ViewEntryController {
         // set form for cancel of edit event
         {
             cancelButton.setVisible(false);
+            editEntryButton.setVisible(true);
+            deleteButton.setVisible(true);
             finalizeEditButton.setVisible(false);
             viewGrid.setVisible(true);
             editGrid.setVisible(false);
@@ -244,10 +243,12 @@ public class ViewEntryController {
         {
             finalizeEditButton.setVisible(true);
             cancelButton.setVisible(true);
+            editEntryButton.setVisible(false);
+            deleteButton.setVisible(false);
             editGrid.setVisible(true);
             viewGrid.setVisible(false);
 
-            editTitle.setText(title.getText());
+            editTitle.setText(titleView.getText());
             editAuthor.setText(author.getText());
             editYear.setValue(Integer.parseInt(year.getText()));
             editFormat.setValue(format.getText());
@@ -264,7 +265,6 @@ public class ViewEntryController {
         {
             idView.setText(String.valueOf(ei.getId()));
             titleView.setText(ei.getTitle());
-            title.setText(ei.getTitle());
             author.setText(ei.getAuthor());
             year.setText(String.valueOf(ei.getYear()));
             format.setText(ei.getWorkType());

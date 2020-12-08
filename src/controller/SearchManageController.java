@@ -18,7 +18,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.Parent;
 import javafx.fxml.FXMLLoader;
 import javafx.event.ActionEvent;
@@ -27,18 +26,16 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.RadioButton;
 import javafx.collections.FXCollections;
+import javafx.scene.layout.AnchorPane;
 
 public class SearchManageController {
     private boolean radioSelected = false;
-
     private final static String imgLoc = System.getProperty("user.dir") + "/src/ui/design/related/covers/";
-
     private String column;
-
     private Object query;
 
     @FXML
-    private BorderPane rootPane;
+    private AnchorPane rootPane;
 
     @FXML
     private GridPane infoGrid;
@@ -158,6 +155,7 @@ public class SearchManageController {
             });
 
             // onhover show a preview of the entry
+            /*
             resultLink.setOnMouseEntered(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent me){
@@ -169,7 +167,7 @@ public class SearchManageController {
                     Image image = new Image(f.toURI().toString());
                     imageView.setImage(image);
                 }
-            });
+            });*/
         }
     }
 
