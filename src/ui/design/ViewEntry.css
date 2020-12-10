@@ -10,52 +10,85 @@
 
 #rootPane{
     -fx-background-color: linear-gradient(rgb(255, 208, 79), rgb(255, 158, 47));
+        background-color: linear-gradient(rgb(255, 208, 79), rgb(255, 158, 47));
 }
 
 #windowTitle{
     -fx-font-family: "Montserrat Medium";
+        font-family: "Montserrat Medium";
+
     -fx-font-size: 20px;
+        font-size: 20px;
 }
 
 .button{
-    -fx-background:none;
+    -fx-background: none;
+        background: none;
 }
 
 .label{
     -fx-font-family: "Montserrat Regular";
+        font-family: "Montserrat Regular";
+
     -fx-font-size: 15px;
+        font-size: 15px;
 }
 
 #deleteLabel{
     -fx-font-family: "Montserrat Medium";
+        font-family: "Montserrat Medium";
+
     -fx-font-size: 30px;
+        font-size: 30px;
 }
 
 #titleView{
     -fx-font-family: "Montserrat Medium";
+        font-family: "Montserrat Medium";
+
     -fx-font-size: 20px;
+        font-size: 20px;
 }
 
 #backButton{
     -fx-background-image: url("backArrow.png");
+        background-image: url("backArrow.png");
+
     -fx-background-size: 40px;
+        background-size: 40px;
+
     -fx-background-repeat: no-repeat;
+        background-repeat: no-repeat;
 
     -fx-stroke:rgba(255, 255, 255, 0.9);
+        stroke:rgba(255, 255, 255, 0.9);
     -fx-stroke-width:2px;
+        stroke-width:2px;
     -fx-effect: dropshadow(gaussian, rgba(255, 255, 255, 0.9), 5, 0.5, 0.0, 0.0);
 }
 
 #deleteButton, #editEntryButton, #cancelButton, #finalizeEditButton{
     -fx-stroke:rgba(255, 255, 255, 0.9);
+        stroke:rgba(255, 255, 255, 0.9);
+
     -fx-stroke-width:2px;
+        stroke-width:2px;
+
     -fx-effect: dropshadow(gaussian, rgba(255, 255, 255, 0.9), 5, 0.5, 0.0, 0.0);
+
     -fx-font-family: "Montserrat Medium";
+        font-family: "Montserrat Medium";
+
     -fx-font-size: 20px;
+        font-size: 20px;
 }
 
 .text-field{
     -fx-prompt-text-font-family: "Montserrat Regular";
+
     -fx-font-family: "Montserrat Regular";
+        font-family: "Montserrat Regular";
+
     -fx-font-size: 12px;
+        font-size: 12px;
 }

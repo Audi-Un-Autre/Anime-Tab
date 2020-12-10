@@ -5,66 +5,120 @@
 
 #rootPane{
     -fx-background-image: url("mido.jpg");
+        background-image: url("mido.jpg");
 
     -fx-background-position: center center;
+        background-position: center center;
+
     -fx-background-size: stretch;
+        background-size: stretch;
 }
 
 #mainTitle{
     -fx-font-family: 'Earth Orbiter Bold';
+        font-family: 'Earth Orbiter Bold';
+
     -fx-font-size: 100px;
+        font-size: 100px;
+
     -fx-text-fill: rgb(0, 0, 0);
 
     -fx-stroke:rgb(0, 174, 255);
+        stroke:rgb(0, 174, 255);
+
     -fx-stroke-width:5px;
+        stroke-width:5px;
+
     -fx-effect: dropshadow(gaussian, rgb(0, 174, 255), 10, 0.5, 0.0, 0.0);
 }
 
 .button{
     -fx-background: none;
+        background: none;
 }
 
 #newEntryButton{
     -fx-background-image: url("add.png");
+        background-image: url("add.png");
+
     -fx-background-size: 75px;
+        background-size: 75px;
+
     -fx-background-repeat: no-repeat;
+        background-repeat: no-repeat;
+
     -fx-background-position: center;
+        background-position: center;
 
     -fx-stroke:rgba(148, 148, 148, 0.9);
+        stroke:rgba(148, 148, 148, 0.9);
+
     -fx-stroke-width:2px;
+        stroke-width:2px;
+
     -fx-effect: dropshadow(gaussian, rgba(148, 148, 148, 0.9), 10, 0.7, 0.0, 0.0);
 }
 
 #newEntryButton:hover, #searchManageButton:hover{
     -fx-stroke:rgb(0, 174, 255);
+        stroke:rgb(0, 174, 255);
+
     -fx-stroke-width:1px;
+        stroke-width:1px;
+
     -fx-effect: dropshadow(gaussian, rgb(0, 174, 255), 10, 0.5, 0.0, 0.0);
 }
 
 #searchManageButton{
     -fx-background-image: url("eye.png");
+        background-image: url("eye.png");
+
     -fx-background-size: 75px;
+        background-size: 75px;
+
     -fx-background-repeat: no-repeat;
+        background-repeat: no-repeat;
+
     -fx-background-position: center;
+        background-position: center;
 
     -fx-stroke:rgba(148, 148, 148, 0.9);
+        stroke:rgba(148, 148, 148, 0.9);
+
     -fx-stroke-width:2px;
+        stroke-width:2px;
+
     -fx-effect: dropshadow(gaussian, rgba(148, 148, 148, 0.9), 10, 0.7, 0.0, 0.0);
 }
 
 #exitButton{
     -fx-background-image: url("pwrbutton.png");
+        background-image: url("pwrbutton.png");
+
     -fx-background-size: 40px;
+        background-size: 40px;
+
     -fx-background-repeat: no-repeat;
+        background-repeat: no-repeat;
+
     -fx-background-position: center;
+        background-position: center;
 
     -fx-stroke:rgb(188, 18, 0);
-    -fx-stroke-width:1px;
+        stroke:rgb(188, 18, 0);
+
+    -fx-stroke-width: 1px;
+        stroke-width: 1px;
+
     -fx-effect: dropshadow(gaussian, rgb(188, 18, 0), 10, 0.5, 0.0, 0.0);
 }
 
 #exitButton:hover{
     -fx-stroke:rgba(148, 148, 148, 0.9);
+        stroke:rgba(148, 148, 148, 0.9);
+
     -fx-stroke-width:1px;
+        stroke-width:1px;
+        
     -fx-effect: dropshadow(gaussian, rgba(148, 148, 148, 0.9), 10, 0.5, 0.0, 0.0);
 }
