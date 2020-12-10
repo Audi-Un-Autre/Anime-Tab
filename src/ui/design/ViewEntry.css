@@ -26,6 +26,11 @@
     -fx-font-size: 15px;
 }
 
+#deleteLabel{
+    -fx-font-family: "Montserrat Medium";
+    -fx-font-size: 30px;
+}
+
 #titleView{
     -fx-font-family: "Montserrat Medium";
     -fx-font-size: 20px;

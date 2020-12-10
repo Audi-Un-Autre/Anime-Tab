@@ -5,12 +5,9 @@ import ui.WindowStyle;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.io.File;
 import java.util.Calendar;
 import java.util.Vector;
 
-import javafx.scene.image.Image;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -23,7 +20,6 @@ import javafx.scene.Parent;
 import javafx.fxml.FXMLLoader;
 import javafx.event.ActionEvent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.RadioButton;
 import javafx.collections.FXCollections;
@@ -32,7 +28,7 @@ import javafx.stage.Stage;
 
 public class SearchManageController {
     private boolean radioSelected = false;
-    private final static String imgLoc = System.getProperty("user.dir") + "/src/ui/design/related/covers/";
+    //private final static String imgLoc = System.getProperty("user.dir") + "/src/ui/design/related/covers/";
     private String column;
     private Object query;
 

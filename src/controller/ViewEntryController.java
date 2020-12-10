@@ -28,6 +28,9 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.collections.FXCollections;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import javafx.scene.Scene;
+import javafx.stage.Modality;
 
 public class ViewEntryController {
 
@@ -43,9 +46,6 @@ public class ViewEntryController {
     private GridPane editGrid, viewGrid;
 
     @FXML
-    private AnchorPane viewPane;
-
-    @FXML
     private Button editEntryButton;
 
     @FXML
@@ -56,9 +56,6 @@ public class ViewEntryController {
 
     @FXML
     private ImageView imageView;
-
-    @FXML
-    private Label deletedLabel;
 
     @FXML
     private Label year;
@@ -105,6 +102,9 @@ public class ViewEntryController {
     @FXML
     private TextField editTitle;
 
+    @FXML
+    private Label deleteLabel;
+
     public void initialize(){
         //populate choiceboxes
         Vector<Integer> year = new Vector<Integer>();
@@ -126,7 +126,7 @@ public class ViewEntryController {
     void BackButtonClicked(ActionEvent event) throws Exception{
         if (!edited){
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../ui/SearchManageScene.fxml"));
-            Parent root = loader.load();
+            root = loader.load();
             SearchManageController smController = loader.getController();
             smController.InitSearch();
         } else {
@@ -229,16 +229,28 @@ public class ViewEntryController {
 
     @FXML
     void DeleteClicked(ActionEvent event) throws Exception{
-        edited = true;
-        DataEntry.Delete(ei);
 
-        // set form for delete consequence
+        //ready form for delete entry
         {
-            viewPane.setVisible(false);
-            deletedLabel.setVisible(true);
-            deleteButton.setVisible(false);
             editEntryButton.setVisible(false);
+            deleteButton.setVisible(false);
         }
+
+        // Delete Confirm window
+        Parent root = null;
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../ui/DeleteScene.fxml"));
+        root = loader.load();
+        Scene scene = new Scene(root);
+
+        DeleteController dc = loader.getController();
+        dc.init(ei, this);
+
+        Stage stage = new Stage(StageStyle.UTILITY);
+        stage.setTitle("Confirm Delete");
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("../ui/design/gon.png")));
+        stage.setScene(scene);
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.show();
     }
 
     @FXML
@@ -258,6 +270,18 @@ public class ViewEntryController {
             editFormat.setValue(format.getText());
             editLanguage.setValue(language.getText());
         }
+    }
+
+    public void CancelDelete(){
+        deleteButton.setVisible(true);
+        editEntryButton.setVisible(true);
+    }
+
+    public void EntryDeleted(){
+        edited = true;
+        idView.setText("Deleted.");
+        deleteLabel.setVisible(true);
+        rootPane.getChildren().removeAll(viewGrid, editGrid, deleteButton, editEntryButton);
     }
 
     public void CreateFormView(Parent root, EntryInfo ei) throws IOException{
