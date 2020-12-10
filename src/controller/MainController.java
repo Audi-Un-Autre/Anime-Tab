@@ -14,9 +14,10 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
 import javafx.stage.StageStyle;
+import ui.WindowStyle;
 
 public class MainController {
-    
+
     @FXML
     private AnchorPane rootPane;
 
@@ -34,7 +35,13 @@ public class MainController {
 
     @FXML
     private void NewEntryButtonClicked(ActionEvent event) throws IOException{
-        ChangeUI("NewEntryScene");
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../ui/NewEntryScene.fxml"));
+        Parent root = loader.load();
+        
+        WindowStyle ws = new WindowStyle();
+        ws.setStyle(root, (Stage) rootPane.getScene().getWindow());
+
+        rootPane.getScene().setRoot(root);
     }
 
     @FXML
@@ -45,29 +52,16 @@ public class MainController {
         SearchManageController smController = loader.getController();
         smController.InitSearch();
         
+        WindowStyle ws = new WindowStyle();
+        ws.setStyle(root, (Stage) rootPane.getScene().getWindow());
+
         rootPane.getScene().setRoot(root);
     }
 
     @FXML
     private void SettingsButtonClicked(ActionEvent event) throws IOException{
-        SettingsUI("SettingsScene");
-    }
-
-    private void ChangeUI(String name) throws IOException{
         Parent root = null;
-
-        root = FXMLLoader.load(getClass().getResource("../ui/"+name+".fxml"));
-        rootPane.getScene().setRoot(root);
-    }
-
-    @FXML
-    private void exitButtonClicked(ActionEvent event){
-        Platform.exit();
-    }
-
-    private void SettingsUI(String name) throws IOException{
-        Parent root = null;
-        root = FXMLLoader.load(getClass().getResource("../ui/"+name+".fxml"));
+        root = FXMLLoader.load(getClass().getResource("../ui/SettingsScene.fxml"));
         Scene scene = new Scene(root);
 
         Stage stage = new Stage(StageStyle.UTILITY);
@@ -76,5 +70,10 @@ public class MainController {
         stage.setScene(scene);
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.show();
+    }
+
+    @FXML
+    private void exitButtonClicked(ActionEvent event){
+        Platform.exit();
     }
 }

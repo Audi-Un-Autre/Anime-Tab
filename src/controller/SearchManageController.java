@@ -1,6 +1,7 @@
 package controller;
 
 import database.*;
+import ui.WindowStyle;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.RadioButton;
 import javafx.collections.FXCollections;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
 public class SearchManageController {
     private boolean radioSelected = false;
@@ -95,6 +97,9 @@ public class SearchManageController {
     void BackButtonClicked(ActionEvent event) throws IOException{
         Parent root = null;
         root = FXMLLoader.load(getClass().getResource("../ui/MainScene.fxml"));
+
+        WindowStyle ws = new WindowStyle();
+        ws.setStyle(root, (Stage) rootPane.getScene().getWindow());
         rootPane.getScene().setRoot(root);
     }
 
@@ -148,6 +153,9 @@ public class SearchManageController {
                     Parent root = loader.load();
                     ViewEntryController veController = loader.getController();
                     veController.CreateFormView(rootPane.getScene().getRoot(), ei);
+
+                    WindowStyle ws = new WindowStyle();
+                    ws.setStyle(root, (Stage) rootPane.getScene().getWindow());
                     rootPane.getScene().setRoot(root);
                 } catch (Exception ex){
                     System.out.println(ex);

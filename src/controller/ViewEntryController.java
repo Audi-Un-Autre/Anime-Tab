@@ -1,6 +1,7 @@
 package controller;
 
 import database.*;
+import ui.WindowStyle;
 
 import java.io.IOException;
 import java.io.File;
@@ -26,6 +27,7 @@ import javafx.stage.FileChooser;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.collections.FXCollections;
+import javafx.stage.Stage;
 
 public class ViewEntryController {
 
@@ -127,12 +129,14 @@ public class ViewEntryController {
             Parent root = loader.load();
             SearchManageController smController = loader.getController();
             smController.InitSearch();
-            rootPane.getScene().setRoot(root);
         } else {
             root = null;
             root = FXMLLoader.load(getClass().getResource("../ui/SearchManageScene.fxml"));
-            rootPane.getScene().setRoot(root);
         }
+
+        WindowStyle ws = new WindowStyle();
+        ws.setStyle(root, (Stage) rootPane.getScene().getWindow());
+        rootPane.getScene().setRoot(root);
     }
 
     @FXML

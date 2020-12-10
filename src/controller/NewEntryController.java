@@ -1,6 +1,7 @@
 package controller;
 
 import database.*;
+import ui.WindowStyle;
 
 import java.io.IOException;
 import java.nio.file.StandardCopyOption;
@@ -26,6 +27,7 @@ import javafx.collections.FXCollections;
 import javafx.css.PseudoClass;
 import javafx.stage.FileChooser;
 import javafx.scene.image.Image;
+import javafx.stage.Stage;
 
 public class NewEntryController {
     private Image imageTemp;
@@ -160,7 +162,13 @@ public class NewEntryController {
 
     @FXML
     void BackButtonClicked(ActionEvent event) throws IOException{
-        ChangeUI("MainScene");
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../ui/MainScene.fxml"));
+        Parent root = loader.load();
+        
+        WindowStyle ws = new WindowStyle();
+        ws.setStyle(root, (Stage) rootPane.getScene().getWindow());
+
+        rootPane.getScene().setRoot(root);
     }
 
     @FXML
@@ -185,11 +193,4 @@ public class NewEntryController {
         imageView.setImage(null);
         clearButton.setVisible(false);
     }
-
-    private void ChangeUI(String name) throws IOException{
-        Parent root = null;
-        root = FXMLLoader.load(getClass().getResource("../ui/"+name+".fxml"));
-        rootPane.getScene().setRoot(root);
-    }
-
 }
