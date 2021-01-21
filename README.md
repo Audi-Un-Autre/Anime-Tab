@@ -10,4 +10,4 @@ Anime Tab is a program that allows users to keep track of all things anime, mang
 - [x] MySQL
 
 # Updates
-- [ ] **12/2020** Web application in progress.
+- [x] **12/2020** Web application in progress.
