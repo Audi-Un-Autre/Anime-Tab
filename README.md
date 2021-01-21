@@ -4,7 +4,7 @@ Anime Tab is a program that allows users to keep track of all things anime, mang
 <br />
 
 # Stacks
-- [x] Java 8
+- [x] Java 14
 - [x] JavaFX 15
 - [x] JavaFX FXML
 - [x] MySQL
